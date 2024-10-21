@@ -5,7 +5,6 @@ import (
 	"HiChat/utils"
 	"fmt"
 	"github.com/spf13/viper"
-	"go.uber.org/zap"
 )
 
 func InitConfig() {
@@ -28,6 +27,4 @@ func InitConfig() {
 	if err := v.Unmarshal(&global.ServiceConfig); err != nil {
 		panic(err)
 	}
-	zap.S().Info("配置信息", global.ServiceConfig)
-
 }
