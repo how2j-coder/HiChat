@@ -1,15 +1,15 @@
 port: '8000'
 mysql:
-  host: '1.14.180.202'
+  host: '127.0.0.1'
   port: '3306'
   name: 'hi_chat'
   user: 'root'
-  password: 'password'
+  password: 'how2j.online'
 log:
-  level: info # 日志等级
-  root_dir: ./storage/logs # 日志根目录
-  filename: app.log # 日志文件名称
-  format: Console# 写入格式 可选json
+  level: 'info' # 日志等级
+  root_dir: './storage/logs' # 日志根目录
+  filename: 'app.log' # 日志文件名称
+  format: json # 写入格式 可选json | console
   show_line: true # 是否显示调用行
   max_backups: 3 # 旧文件的最大个数
   max_size: 500 # 日志文件最大大小（MB）

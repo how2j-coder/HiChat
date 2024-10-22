@@ -3,19 +3,39 @@ package initialize
 import (
 	"HiChat/global"
 	"HiChat/utils"
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
+	"strings"
 	"time"
 )
-
-type Level = zapcore.Level
 
 var (
 	level   zapcore.Level // zap 日志等级
 	options []zap.Option  // zap 配置项
 )
+
+const blankStr = "  "
+
+type Level = zapcore.Level
+
+type LoggerWriter struct {
+	test string
+}
+
+func (lw *LoggerWriter) Write(p []byte) (n int, err error) {
+	splitStr := strings.Split(string(p), "--")
+	logInfo := strings.Join(splitStr[:len(splitStr)-1], blankStr)
+	logContent := splitStr[len(splitStr)-1]
+	msg := fmt.Sprintf("%s\n%s", logInfo, logContent)
+	return os.Stdout.Write([]byte(msg))
+}
+
+func (lw *LoggerWriter) Sync() error {
+	return nil
+}
 
 func InitLogger() {
 	// 创建根目录
@@ -61,34 +81,64 @@ func setLogLevel() {
 
 // 扩展 Zap
 func getZapCore() zapcore.Core {
+	// 存储文件/控制
 	var fileEncoder, consoleEncoder zapcore.Encoder
 
 	// 调整编码器默认配置
-	encoderConfig := zap.NewProductionEncoderConfig()
+	fileEncoderConfig := zap.NewProductionEncoderConfig()
 	// 时间
-	encoderConfig.EncodeTime = func(time time.Time, encoder zapcore.PrimitiveArrayEncoder) {
+	fileEncoderConfig.EncodeTime = func(time time.Time, encoder zapcore.PrimitiveArrayEncoder) {
 		encoder.AppendString(time.Format("[" + "2006-01-02 15:04:05" + "]"))
 	}
 	// 日志等级
-	encoderConfig.EncodeLevel = func(l zapcore.Level, encoder zapcore.PrimitiveArrayEncoder) {
+	fileEncoderConfig.EncodeLevel = func(l zapcore.Level, encoder zapcore.PrimitiveArrayEncoder) {
 		encoder.AppendString("how2j" + "." + l.String())
 	}
-
-	encoderConfig.EncodeCaller = func(caller zapcore.EntryCaller, encoder zapcore.PrimitiveArrayEncoder) {
+	// 调用行
+	fileEncoderConfig.EncodeCaller = func(caller zapcore.EntryCaller, encoder zapcore.PrimitiveArrayEncoder) {
 		encoder.AppendString(caller.TrimmedPath())
 	}
 
 	// 设置编码器
 	if global.ServiceConfig.Log.Format == "json" {
-		fileEncoder = zapcore.NewJSONEncoder(encoderConfig)
+		fileEncoder = zapcore.NewJSONEncoder(fileEncoderConfig)
 	} else {
-		fileEncoder = zapcore.NewConsoleEncoder(encoderConfig)
+		fileEncoder = zapcore.NewConsoleEncoder(fileEncoderConfig)
 	}
-	consoleEncoder = zapcore.NewConsoleEncoder(encoderConfig)
-	//var writes = []zapcore.WriteSyncer{getLogWriter(), zapcore.AddSync(os.Stdout)}
+	// ----------------------------------------------------
+	// 调整编码器默认配置
+	logEncoderConfig := zapcore.EncoderConfig{
+		TimeKey:          "Time",
+		LevelKey:         "Level",
+		NameKey:          "Logger",
+		CallerKey:        "Caller",
+		MessageKey:       "Message",
+		StacktraceKey:    "StackTrace",
+		LineEnding:       zapcore.DefaultLineEnding,
+		FunctionKey:      zapcore.OmitKey,
+		ConsoleSeparator: "--",
+	}
+
+	// 时间
+	logEncoderConfig.EncodeTime = func(time time.Time, encoder zapcore.PrimitiveArrayEncoder) {
+		encoder.AppendString("HI-CHAT")
+		encoder.AppendString(time.Format("[" + "2006-01-02 15:04:05" + "]"))
+	}
+	// 日志等级
+	logEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder
+	// 调用行
+	logEncoderConfig.EncodeCaller = func(caller zapcore.EntryCaller, encoder zapcore.PrimitiveArrayEncoder) {
+		encoder.AppendString(caller.FullPath())
+	}
+
+	// 设置编码器
+	consoleEncoder = zapcore.NewConsoleEncoder(logEncoderConfig)
+	writer := &LoggerWriter{}
+	consoleCore := zapcore.NewCore(consoleEncoder, zapcore.AddSync(writer), level)
+
 	return zapcore.NewTee(
 		zapcore.NewCore(fileEncoder, getLogWriter(), level),
-		zapcore.NewCore(consoleEncoder, zapcore.AddSync(os.Stdout), level),
+		consoleCore,
 	)
 }
 
