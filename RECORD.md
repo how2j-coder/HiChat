@@ -12,3 +12,10 @@
 ### Learn
 
 * [exercism](https://exercism.org/tracks/go/exercises/hello-world)
+
+### Future Develop
+
+####  commitizen(pre-commit )
+
+  * [commitizen-go](https://github.com/lintingzhen/commitizen-go)
+  * [gitcz](https://github.com/xiaoqidun/gitcz?tab=readme-ov-file)
