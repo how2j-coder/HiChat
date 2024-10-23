@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 	"strings"
@@ -38,7 +39,7 @@ func (lw *LoggerWriter) Sync() error {
 }
 
 func InitLogger() {
-	// 创建根目录
+	// 创建日志文件存储目录
 	createRootDir()
 
 	// 设置日志等级
@@ -88,7 +89,7 @@ func getZapCore() zapcore.Core {
 	fileEncoderConfig := zap.NewProductionEncoderConfig()
 	// 时间
 	fileEncoderConfig.EncodeTime = func(time time.Time, encoder zapcore.PrimitiveArrayEncoder) {
-		encoder.AppendString(time.Format("[" + "2006-01-02 15:04:05" + "]"))
+		encoder.AppendString(time.Format("2006-01-02 15:04:05"))
 	}
 	// 日志等级
 	fileEncoderConfig.EncodeLevel = func(l zapcore.Level, encoder zapcore.PrimitiveArrayEncoder) {
@@ -121,8 +122,8 @@ func getZapCore() zapcore.Core {
 
 	// 时间
 	logEncoderConfig.EncodeTime = func(time time.Time, encoder zapcore.PrimitiveArrayEncoder) {
-		encoder.AppendString("HI-CHAT")
-		encoder.AppendString(time.Format("[" + "2006-01-02 15:04:05" + "]"))
+		encoder.AppendString("[ HI-CHAT ]")
+		encoder.AppendString(time.Format("2006-01-02 15:04:05"))
 	}
 	// 日志等级
 	logEncoderConfig.EncodeLevel = zapcore.CapitalColorLevelEncoder

@@ -13,7 +13,10 @@ import (
 
 func InitDB() {
 	dbConfig := global.ServiceConfig.DB
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, "mysql")
+	dsn := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		dbConfig.User, dbConfig.Password, dbConfig.Host, dbConfig.Port, dbConfig.Name,
+	)
 
 	//写sql语句配置
 	newLogger := logger.New(
@@ -34,7 +37,7 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println("how2j")
+		global.Logger.Info("database successfully initialized")
 	}
 
 }
