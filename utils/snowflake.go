@@ -44,6 +44,7 @@ func (s *Snowflake) waitNextMillis() int64 {
 	return currentTimestamp
 }
 
+// GenerateID 生成雪花算法ID
 func (s *Snowflake) GenerateID() int64 {
 	currentTimestamp := time.Now().UnixNano() / 1e6
 	if currentTimestamp == s.timestamp {
