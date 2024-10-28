@@ -1,21 +1,11 @@
 package models
 
 import (
-	"HiChat/utils"
-	"gorm.io/gorm"
-	"strconv"
 	"time"
 )
 
-type CommonModel struct {
-	ID        string `gorm:"primary_key"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt `gorm:"index"`
-}
-
 type UserBasic struct {
-	CommonModel
+	CommonBaseModel
 	Name          string `gorm:"comment '用户名'"`
 	PassWord      string `gorm:"comment '密码'"`
 	Avatar        string `gorm:"comment '头像'"`
@@ -33,12 +23,6 @@ type UserBasic struct {
 	DeviceInfo    string //登录设备
 }
 
-var Snowflake = utils.NewSnowflake(int64(52))
-
 func (table *UserBasic) UserTableName() string {
-	return "user_basic"
-}
-func (com *CommonModel) BeforeCreate(_ *gorm.DB) (err error) {
-	com.ID = strconv.FormatInt(Snowflake.GenerateID(), 10)
-	return
+	return "users"
 }

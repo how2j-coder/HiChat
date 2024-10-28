@@ -4,6 +4,7 @@ import (
 	"HiChat/utils"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"reflect"
 	"strconv"
 	"testing"
@@ -82,4 +83,11 @@ func TestTypeDefault(t *testing.T) {
 		fmt.Println(status)
 	}
 	test()
+}
+
+// 盐值
+func TestSlat(t *testing.T) {
+	//生成盐值
+	salt := fmt.Sprintf("%d", rand.Int31())
+	fmt.Println(salt)
 }

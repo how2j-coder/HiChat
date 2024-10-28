@@ -59,6 +59,7 @@ func response(code int, status bool, msg string) *Response {
 }
 
 var (
-	Success = response(http.StatusOK, true, "success")
-	Error   = response(http.StatusInternalServerError, true, "error")
+	Success  = response(http.StatusOK, true, "success")
+	Error    = response(http.StatusInternalServerError, true, "error")
+	NotFound = response(http.StatusNotFound, true, "Not Found")
 )

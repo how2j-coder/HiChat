@@ -17,7 +17,7 @@ func CreateUser(user models.UserBasic) (*models.UserBasic, error) {
 	return &user, nil
 }
 
-// GetUser 查找用户-精准查询
+// GetUser 查找用户-精准查询(根据phone Or email)
 func GetUser(user models.UserBasic) (*models.UserBasic, error) {
 	if tx := global.DB.Where("phone = ?", user.Phone).Or("email = ?", user.Email).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
@@ -38,13 +38,13 @@ func DeleteUser(user models.UserBasic) error {
 	return nil
 }
 
-// UnDeleteUser 恢复用户
+// UnDeleteUser 恢复用户 (根据phone Or email)
 func UnDeleteUser(user models.UserBasic) (*models.UserBasic, error) {
 	if tx := global.DB.Unscoped().Model(&user).Where(
 		"phone = ?", user.Phone,
 	).Or("email = ?", user.Email).First(&user).Update("deleted_at", nil); tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
-		return nil, errors.New("用户恢复失败")
+		return nil, errors.New("用户找回失败")
 	}
 
 	return &user, nil
@@ -55,9 +55,9 @@ func GetUserList() ([]*models.UserBasic, error) {
 	var list []*models.UserBasic
 	if tx := global.DB.Find(&list); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-			return make([]*models.UserBasic, 0), nil
+			return nil, nil
 		}
-		return nil, gorm.ErrRecordNotFound
+		return nil, tx.Error
 	}
 	return list, nil
 }
