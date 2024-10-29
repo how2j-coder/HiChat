@@ -17,6 +17,19 @@ func CreateUser(user models.UserBasic) (*models.UserBasic, error) {
 	return &user, nil
 }
 
+// FindUserByName 通过用户名精准查询
+func FindUserByName(name string) (*models.UserBasic, error) {
+	user := models.UserBasic{}
+	if tx := global.DB.Where("name = ?", name).First(&user); tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		global.Logger.Error(tx.Error.Error())
+		return nil, tx.Error
+	}
+	return &user, nil
+}
+
 // FindUser 查找用户-精准查询(根据phone Or email)
 func FindUser(user models.UserBasic) (*models.UserBasic, error) {
 	if tx := global.DB.Where("phone = ?", user.Phone).Or("email = ?", user.Email).First(&user); tx.Error != nil {
