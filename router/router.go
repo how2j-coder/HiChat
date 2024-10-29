@@ -30,7 +30,7 @@ func Roter() *gin.Engine {
 	//用户模块，后续有个用户的api就放置其中
 	user := v1.Group("user")
 	{
-		user.POST("", service.Create)
+		user.POST("/create", service.Create) // 创建用花
 		user.GET("/list", service.List)
 	}
 

@@ -1,10 +1,12 @@
 package service
 
 import (
-	result "HiChat/common"
+	. "HiChat/common"
 	"HiChat/dao"
 	"HiChat/global"
 	"HiChat/models"
+	"encoding/json"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"math/rand"
@@ -15,18 +17,20 @@ import (
 func Create(ctx *gin.Context) {
 	user := models.UserBasic{}
 	user.Name = ctx.Request.FormValue("username") // 用户名称
-	//pasword := ctx.Request.FormValue("password")
-	////生成盐值
-	//salt := fmt.Sprintf("%d", rand.Int31())
-	rand.Int31()
-	//user.PassWord = common.SaltPassWord(password, salt)
-	//user.Salt = salt
-	cUser, err := dao.CreateUser(user)
-	if err != nil {
-		return
-	} else {
-		ctx.JSON(200, result.Success.WithData(cUser))
-	}
+	password := ctx.Request.FormValue("password")
+	//生成盐值
+	salt := fmt.Sprintf("%d", rand.Int31())
+	user.PassWord = SaltPassWord(password, salt)
+	user.Salt = salt
+	test, _ := json.MarshalIndent(user, "", " ")
+	global.Logger.Info(string(test))
+	//cUser, err := dao.CreateUser(user)
+	ctx.JSON(200, Success.WithData("12313"))
+	//if err != nil {
+	//	return
+	//} else {
+	//	ctx.JSON(200, Success.WithData(cUser))
+	//}
 
 }
 
@@ -34,13 +38,13 @@ func Create(ctx *gin.Context) {
 func List(ctx *gin.Context) {
 	list, err := dao.GetUserList()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, result.Error.WithMsg(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
 		global.Logger.Error("Get user list error", zap.Error(err))
 	} else {
 		if list == nil {
 			list = make([]*models.UserBasic, 0)
 		}
-		ctx.JSON(http.StatusOK, result.Success.WithData(list))
+		ctx.JSON(http.StatusOK, Success.WithData(list))
 	}
 
 }

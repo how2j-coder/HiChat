@@ -17,8 +17,8 @@ func CreateUser(user models.UserBasic) (*models.UserBasic, error) {
 	return &user, nil
 }
 
-// GetUser 查找用户-精准查询(根据phone Or email)
-func GetUser(user models.UserBasic) (*models.UserBasic, error) {
+// FindUser 查找用户-精准查询(根据phone Or email)
+func FindUser(user models.UserBasic) (*models.UserBasic, error) {
 	if tx := global.DB.Where("phone = ?", user.Phone).Or("email = ?", user.Email).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil

@@ -32,3 +32,4 @@
   * [go-gin-api](https://github.com/xinliangnote/go-gin-api/tree/master)
   * [HiChat](https://github.com/iceymoss/HiChat/blob/master/main.go)
   * [从0到1搭建一个IM项目](https://learnku.com/articles/74279)
+  * [使用jwt-go实现jwt签名与验签](https://juejin.cn/post/7219651766706159653)

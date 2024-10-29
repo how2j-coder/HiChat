@@ -13,10 +13,10 @@ func TestCrateToken(t *testing.T) {
 	}
 
 	s := Us{Name: "12312"}
-	fmt.Println(common.GenerateTaken(s))
+	fmt.Println(common.GenerateTaken(s, "how2j"))
 }
 
 func TestParseToken(t *testing.T) {
-	s := "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.e30.jzJNGpY-XSaZVphG93ti50p_9EloefDWnZNBVKicPvnMd2nJyNrpycGUN3yVLIkXO7YmTFhmhyoRUwRTZlmVc-M9Ht7vyNrK2I3h07EGmvtPUurQPpyj1Ksg9q7EPVCoKRytDQHVaaFp2VQnwUKpwUybOGyjsHEykR8CG_OukuuDdHqdPCwHvgWyZe-vpNkuIh5VpLliZo_7Dm3GwMW062F92r1hweNcHX-6QkENuhYRlL8s3uy0eNcD620d-if5O_dhV4JiZdw8wex4iPPivEYANICiJfJ6UdR1k9vDmyf129Wr3bCZdnrmM_XyG2jg9cAcQwMVivpGWgQYEqbgmQ"
+	s := "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZvX3QiOnsibmFtZSI6IjEyMzEyIn19.TePAG_qRo4uK0-UL4Nnub-Joj4-AnSGNgaAuweIECyG224WqmA6HvuQJiU4YjsTCI6oGRakIUn9vhNm6d0uXhDcWSLY7D7hNfppy4iGIbWQAmNe8GwGwAW9LqOI3QEEPZ9rQy0X7fXLUT66s01Ix2pK5Zwm2QKBqLD-a0nvTMP4UyDHlhBkrEuInQbp8npBhY1qDZiHBfVt2BkGXv8Vxs91dzr_3M3FBtXfuBDBUm7NwLQfIA7IceGoqInvrHrHBvTBo1fDZ_dNzDYCu6Rk37IuTxk_FehogWkr1Lj6lZZevuP8frHRjsdGnA69TEmjnb-Uq4dRhr__1C2I4CMlByw"
 	fmt.Println(common.DecryptTaken(s))
 }
