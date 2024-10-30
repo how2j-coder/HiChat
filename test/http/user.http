@@ -1,0 +1,9 @@
+// @no-log 创建用户
+POST http://localhost:8000/v1/user/create
+Content-Type: application/json
+
+{
+  "username": "how2j",
+  "email": "how2j.online@online.com",
+  "password": "how2j.online"
+}

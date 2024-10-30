@@ -59,8 +59,8 @@ func response(code int, status bool, msg string) *Response {
 }
 
 var (
-	Success     = response(http.StatusOK, true, "Success")
-	Error       = response(http.StatusInternalServerError, true, "Error")
-	NotFound    = response(http.StatusNotFound, true, "Not Found")
-	ParamsError = response(-1, false, "The parameter is the default")
+	Success        = response(http.StatusOK, true, "Success")
+	Error          = response(http.StatusInternalServerError, true, "Error")
+	NotFound       = response(http.StatusNotFound, true, "Not Found")
+	ParamsNilError = response(-1, false, "The parameter is the default")
 )

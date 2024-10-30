@@ -32,7 +32,7 @@ func Create(ctx *gin.Context) {
 	temp := TempData{}
 	user := models.UserBasic{}
 	if err := ctx.ShouldBind(&temp); err != nil {
-		ctx.JSON(http.StatusBadRequest, ParamsError.WithMsg(err.Error()))
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error(err.Error())
 		return
 	}
@@ -45,14 +45,14 @@ func Create(ctx *gin.Context) {
 	}
 
 	if user.Email == "" || password == "" {
-		ctx.JSON(http.StatusOK, ParamsError.WithMsg("邮箱或密码不能为空！"))
+		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("邮箱或密码不能为空！"))
 		return
 	}
 
 	findUser, err := dao.FindUser(user)
 
 	if (err == nil && findUser != nil) || err != nil {
-		ctx.JSON(http.StatusOK, ParamsError.WithMsg("用户已注册！"))
+		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("用户已注册！"))
 		return
 	}
 
@@ -60,7 +60,7 @@ func Create(ctx *gin.Context) {
 	salt := fmt.Sprintf("%d", rand.Int31())
 	user.PassWord = SaltPassWord(password, salt)
 	user.Salt = salt
-	
+
 	_, err = dao.CreateUser(user)
 	if err != nil {
 		return
