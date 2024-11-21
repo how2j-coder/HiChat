@@ -69,6 +69,26 @@ func Create(ctx *gin.Context) {
 	}
 }
 
+// Login 用户登录
+func Login(ctx *gin.Context) {
+	type TempData struct {
+		Name     string `json:"username" `
+		Password string `json:"password"`
+	}
+	temp := TempData{}
+	//validate := validator.New()
+	if err := ctx.ShouldBind(&temp); err != nil {
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error(err.Error())
+		return
+	}
+
+	if temp.Name == "" {
+
+	}
+	ctx.JSON(200, Success.WithData("test"))
+}
+
 // List 获取用户列表
 func List(ctx *gin.Context) {
 	list, err := dao.GetUserList()
