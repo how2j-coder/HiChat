@@ -16,7 +16,7 @@ func setup() {
 // 创建用户
 func TestCreateUser(t *testing.T) {
 	setup()
-	user := models.UserBasic{
+	user := models.User{
 		Name:     "how2j",
 		PassWord: "how2j.online",
 		Avatar:   "https://example.com",

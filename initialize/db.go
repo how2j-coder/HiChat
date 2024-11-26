@@ -2,6 +2,7 @@ package initialize
 
 import (
 	"HiChat/global"
+	"HiChat/models"
 	"fmt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -37,7 +38,13 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	} else {
-		global.Logger.Info("database successfully initialized")
+		err := global.DB.AutoMigrate(&models.User{})
+		if err != nil {
+			global.Logger.Info("database create error")
+			global.Logger.Error(err.Error())
+			return
+		} else {
+			global.Logger.Info("database successfully initialized")
+		}
 	}
-
 }

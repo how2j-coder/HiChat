@@ -5,6 +5,7 @@ import (
 	"HiChat/dao"
 	"HiChat/global"
 	"HiChat/models"
+	"HiChat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -26,13 +27,14 @@ func generateRandomString(length int) string {
 func Create(ctx *gin.Context) {
 	type TempData struct {
 		Name     string `json:"username"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
+		Email    string `json:"email" binding:"required" requiredMsg:"邮箱不能为空"`
+		Password string `json:"password" binding:"required" requiredMsg:"密码不能为空"`
 	}
 	temp := TempData{}
-	user := models.UserBasic{}
+	user := models.User{}
 	if err := ctx.ShouldBind(&temp); err != nil {
-		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(err.Error()))
+		errText := utils.GetErrorMsg(err, temp)
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		global.Logger.Error(err.Error())
 		return
 	}
@@ -44,15 +46,15 @@ func Create(ctx *gin.Context) {
 		user.Name = generateRandomString(7)
 	}
 
-	if user.Email == "" || password == "" {
-		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("邮箱或密码不能为空！"))
+	findUser, err := dao.FindUser(user)
+
+	if err == nil && findUser != nil {
+		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("用户已注册！"))
 		return
 	}
 
-	findUser, err := dao.FindUser(user)
-
-	if (err == nil && findUser != nil) || err != nil {
-		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("用户已注册！"))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		return
 	}
 
@@ -72,20 +74,17 @@ func Create(ctx *gin.Context) {
 // Login 用户登录
 func Login(ctx *gin.Context) {
 	type TempData struct {
-		Name     string `json:"username" `
+		Name     string `json:"username" binding:"required" requiredMsg:"用户名不能为空"`
 		Password string `json:"password"`
 	}
 	temp := TempData{}
-	//validate := validator.New()
 	if err := ctx.ShouldBind(&temp); err != nil {
-		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(err.Error()))
+		errText := utils.GetErrorMsg(err, temp)
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		global.Logger.Error(err.Error())
 		return
 	}
 
-	if temp.Name == "" {
-
-	}
 	ctx.JSON(200, Success.WithData("test"))
 }
 
@@ -97,7 +96,7 @@ func List(ctx *gin.Context) {
 		global.Logger.Error("Get user list error", zap.Error(err))
 	} else {
 		if list == nil {
-			list = make([]*models.UserBasic, 0)
+			list = make([]*models.User, 0)
 		}
 		ctx.JSON(http.StatusOK, Success.WithData(list))
 	}

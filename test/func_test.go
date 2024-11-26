@@ -61,13 +61,13 @@ type Test struct {
 }
 
 func TestJSONData(t *testing.T) {
-	// 创建一些 UserBasic 实例
+	// 创建一些 User 实例
 	users := []*Test{
 		{ID: 1, Name: "Alice"},
 		{ID: 2, Name: "Bob"},
 	}
 
-	// 将 []*models.UserBasic 转换为 JSON 字符串
+	// 将 []*models.User 转换为 JSON 字符串
 	jsonData, err := json.Marshal(users)
 	if err != nil {
 		fmt.Println("Error marshaling to JSON:", err)

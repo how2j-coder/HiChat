@@ -8,7 +8,7 @@ import (
 )
 
 // CreateUser 创建用户
-func CreateUser(user models.UserBasic) (*models.UserBasic, error) {
+func CreateUser(user models.User) (*models.User, error) {
 	tx := global.DB.Create(&user)
 	if tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
@@ -18,8 +18,8 @@ func CreateUser(user models.UserBasic) (*models.UserBasic, error) {
 }
 
 // FindUserByName 通过用户名精准查询
-func FindUserByName(name string) (*models.UserBasic, error) {
-	user := models.UserBasic{}
+func FindUserByName(name string) (*models.User, error) {
+	user := models.User{}
 	if tx := global.DB.Where("name = ?", name).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -31,7 +31,7 @@ func FindUserByName(name string) (*models.UserBasic, error) {
 }
 
 // FindUser 查找用户-精准查询(根据phone Or email)
-func FindUser(user models.UserBasic) (*models.UserBasic, error) {
+func FindUser(user models.User) (*models.User, error) {
 	if tx := global.DB.Where("phone = ?", user.Phone).Or("email = ?", user.Email).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -43,7 +43,7 @@ func FindUser(user models.UserBasic) (*models.UserBasic, error) {
 }
 
 // DeleteUser 删除用户
-func DeleteUser(user models.UserBasic) error {
+func DeleteUser(user models.User) error {
 	if tx := global.DB.Delete(&user); tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
 		return errors.New("删除用户失败")
@@ -52,7 +52,7 @@ func DeleteUser(user models.UserBasic) error {
 }
 
 // UnDeleteUser 恢复用户 (根据phone Or email)
-func UnDeleteUser(user models.UserBasic) (*models.UserBasic, error) {
+func UnDeleteUser(user models.User) (*models.User, error) {
 	if tx := global.DB.Unscoped().Model(&user).Where(
 		"phone = ?", user.Phone,
 	).Or("email = ?", user.Email).First(&user).Update("deleted_at", nil); tx.Error != nil {
@@ -64,9 +64,9 @@ func UnDeleteUser(user models.UserBasic) (*models.UserBasic, error) {
 }
 
 // GetUserList 获取用户列表
-func GetUserList() ([]*models.UserBasic, error) {
-	var list []*models.UserBasic
-	if tx := global.DB.Find(&list); tx.Error != nil {
+func GetUserList() ([]*models.User, error) {
+	var list []*models.User
+	if tx := global.DB.Omit("Salt", "Identity").Find(&list); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}

@@ -1,5 +1,6 @@
-// @no-log 创建用户
-POST http://localhost:8000/v1/user/create
+### 创建用户
+// @no-log
+POST http://localhost:8000/api/v1/user/create
 Content-Type: application/json
 
 {
@@ -7,3 +8,18 @@ Content-Type: application/json
   "email": "how2j.online@online.com",
   "password": "how2j.online"
 }
+
+### 用户登录
+// @no-log
+POST http://localhost:8000/api/v1/user/login
+Content-Type: application/json
+
+{
+  "username": "how2j"
+}
+
+### 获取用户列表
+// @no-log
+GET http://localhost:8000/api/v1/user/list
+
+
