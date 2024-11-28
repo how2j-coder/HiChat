@@ -11,24 +11,17 @@ import (
 	"go.uber.org/zap"
 	"math/rand"
 	"net/http"
+	"time"
 )
 
-const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.?/|*&$%#@!{}[]"
 
-func generateRandomString(length int) string {
-	b := make([]byte, length)
-	for i := range b {
-		b[i] = charset[rand.Intn(len(charset))]
-	}
-	return string(b)
-}
 
 // Create 创建用户
 func Create(ctx *gin.Context) {
 	type TempData struct {
 		Name     string `json:"username"`
 		Email    string `json:"email" binding:"required" requiredMsg:"邮箱不能为空"`
-		Password string `json:"password" binding:"required" requiredMsg:"密码不能为空"`
+		Password string `json:"password" binding:"required,min=6" requiredMsg:"密码不能为空" minMsg:"密码最少为6位数"`
 	}
 	temp := TempData{}
 	user := models.User{}
@@ -43,18 +36,18 @@ func Create(ctx *gin.Context) {
 	password := temp.Password // 密码
 
 	if temp.Name == "" {
-		user.Name = generateRandomString(7)
+		user.Name = utils.GenerateRandomString(7)
 	}
 
 	findUser, err := dao.FindUser(user)
 
 	if err == nil && findUser != nil {
-		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("用户已注册！"))
+		ctx.JSON(http.StatusOK, Success.WithMsg("用户已注册"))
 		return
 	}
 
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
 		return
 	}
 
@@ -67,15 +60,15 @@ func Create(ctx *gin.Context) {
 	if err != nil {
 		return
 	} else {
-		ctx.JSON(200, Success.WithMsg("注册成功！"))
+		ctx.JSON(http.StatusOK, Success.WithMsg("注册成功"))
 	}
 }
 
-// Login 用户登录
-func Login(ctx *gin.Context) {
+// LoginByPassword 用户登录
+func LoginByPassword(ctx *gin.Context) {
 	type TempData struct {
 		Name     string `json:"username" binding:"required" requiredMsg:"用户名不能为空"`
-		Password string `json:"password"`
+		Password string `json:"password" binding:"required" requiredMsg:"密码不能为空"`
 	}
 	temp := TempData{}
 	if err := ctx.ShouldBind(&temp); err != nil {
@@ -85,7 +78,30 @@ func Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(200, Success.WithData("test"))
+	findUser, err := dao.FindUserByName(temp.Name)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg("登录失败"))
+		global.Logger.Error(err.Error())
+		return
+	}
+
+	if findUser == nil {
+		ctx.JSON(http.StatusOK, NotFound.WithMsg("用户未注册"))
+		return
+	}
+
+	checkPwdOk := CheckPassWord(temp.Password, findUser.Salt, findUser.PassWord)
+
+	if !checkPwdOk {
+		ctx.JSON(http.StatusOK, Error.WithMsg("密码错误"))
+		return
+	}
+
+	acToken, reToken := GenerateTaken(findUser.ID,"Auth_Server", time.Hour * 2)
+	ctx.JSON(200, Success.WithData(map[string]string{
+		"access_token": acToken,
+		"refresh_token":reToken,
+	}))
 }
 
 // List 获取用户列表

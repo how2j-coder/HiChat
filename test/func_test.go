@@ -4,7 +4,7 @@ import (
 	"HiChat/utils"
 	"encoding/json"
 	"fmt"
-	"math/rand"
+	"github.com/google/uuid"
 	"reflect"
 	"strconv"
 	"testing"
@@ -87,7 +87,12 @@ func TestTypeDefault(t *testing.T) {
 
 // 盐值
 func TestSlat(t *testing.T) {
-	//生成盐值
-	salt := fmt.Sprintf("%d", rand.Int31())
-	fmt.Println(salt)
+	uuidValue := uuid.New()
+	fmt.Println(uuidValue.String())
+
 }
+
+
+
+
+

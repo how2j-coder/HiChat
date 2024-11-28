@@ -4,9 +4,9 @@ POST http://localhost:8000/api/v1/user/create
 Content-Type: application/json
 
 {
-  "username": "how2j",
-  "email": "how2j.online@online.com",
-  "password": "how2j.online"
+  "username": "",
+  "email": "admin@online.com",
+  "password": "1234567"
 }
 
 ### 用户登录
@@ -15,11 +15,15 @@ POST http://localhost:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-  "username": "how2j"
+  "username": "how2j",
+  "password": "how2j.online"
 }
+
+> {% client.global.set("auth_token", response.body.data.access_token); %}
 
 ### 获取用户列表
 // @no-log
 GET http://localhost:8000/api/v1/user/list
+Authorization: Bearer {{auth_token}}
 
 

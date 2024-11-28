@@ -30,9 +30,9 @@ func FindUserByName(name string) (*models.User, error) {
 	return &user, nil
 }
 
-// FindUser 查找用户-精准查询(根据phone Or email)
+// FindUser 查找用户-精准查询(根据email)
 func FindUser(user models.User) (*models.User, error) {
-	if tx := global.DB.Where("phone = ?", user.Phone).Or("email = ?", user.Email).First(&user); tx.Error != nil {
+	if tx := global.DB.Where("email = ?", user.Email).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
@@ -66,7 +66,8 @@ func UnDeleteUser(user models.User) (*models.User, error) {
 // GetUserList 获取用户列表
 func GetUserList() ([]*models.User, error) {
 	var list []*models.User
-	if tx := global.DB.Omit("Salt", "Identity").Find(&list); tx.Error != nil {
+	if tx := global.DB.Omit("Salt", "Identity",
+		"PassWord", "ClientIp", "ClientPort", "UpdatedAt", "DeletedAt").Find(&list); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}

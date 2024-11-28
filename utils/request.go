@@ -3,6 +3,7 @@ package utils
 import (
 	"errors"
 	"github.com/go-playground/validator/v10"
+	"math/rand"
 	"reflect"
 )
 
@@ -26,5 +27,14 @@ func GetErrorMsg(err error, structure interface{}) string {
 
 	// 其他类型的错误直接返回错误信息
 	return err.Error()
+}
 
+const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.?/|*&$%#@!{}[]"
+
+func GenerateRandomString(length int) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
 }

@@ -3,6 +3,7 @@ package router
 import (
 	result "HiChat/common"
 	"HiChat/global"
+	"HiChat/middlewear"
 	"HiChat/service"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -33,8 +34,8 @@ func Roter() *gin.Engine {
 	user := v1.Group("user")
 	{
 		user.POST("/create", service.Create) // 创建用户
-		user.POST("/login", service.Login)
-		user.GET("/list", service.List)
+		user.POST("/login", service.LoginByPassword)
+		user.GET("/list", middlewear.AuthRequired(), service.List)
 	}
 
 	return router

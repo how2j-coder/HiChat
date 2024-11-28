@@ -2,11 +2,10 @@ package common
 
 import (
 	"encoding/json"
-	"net/http"
 )
 
 type Response struct {
-	Code    int         `json:"code"`    // 状态码 200
+	Code    int         `json:"code"`    // 业务状态码 200
 	Status  bool        `json:"status"`  // 状态信息 True | False
 	Message string      `json:"message"` // 返回信息 Operation successful
 	Data    interface{} `json:"data"`    // 返回数据 Data
@@ -37,7 +36,7 @@ func (res *Response) ToString() string {
 	err := &struct {
 		Code    int         `json:"code"`
 		Status  bool        `json:"status"`
-		Message string      `json:"Message"`
+		Message string      `json:"message"`
 		Data    interface{} `json:"data"`
 	}{
 		Code:    res.Code,
@@ -52,15 +51,22 @@ func (res *Response) ToString() string {
 func response(code int, status bool, msg string) *Response {
 	return &Response{
 		Code:    code,
-		Status:  status, // 当我传入status时, 值为我传入的值, 否则Status默认为true
+		Status:  status,
 		Message: msg,
 		Data:    nil,
 	}
 }
 
 var (
-	Success        = response(http.StatusOK, true, "Success")
-	Error          = response(http.StatusInternalServerError, true, "Error")
-	NotFound       = response(http.StatusNotFound, true, "Not Found")
-	ParamsNilError = response(-1, false, "The parameter is the default")
+	SuccessCode = 1000
+	ErrorCode   = 1001
+	ParamsErrorCode   = 1002 // 参数错误
+	NotFoundCode = 1004
+)
+
+var (
+	Success        = response(SuccessCode, true, "success")
+	Error          = response(ErrorCode, true, "error")
+	NotFound       = response(NotFoundCode, true, "not found")
+	ParamsNilError = response(ParamsErrorCode, false, "the parameter is the default")
 )

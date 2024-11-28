@@ -27,7 +27,7 @@ vendor
 .idea
 .vscode
 
-storage
+cache
 pkg
 tmp
 package.json
