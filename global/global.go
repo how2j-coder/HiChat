@@ -2,6 +2,7 @@ package global
 
 import (
 	"HiChat/config"
+	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
@@ -9,6 +10,7 @@ import (
 var (
 	ServiceConfig *config.ServiceConfig
 	DB            *gorm.DB
+	RedisDB       *redis.Client
 	Logger        *zap.Logger
 )
 

@@ -3,7 +3,9 @@ package initialize
 import (
 	"HiChat/global"
 	"HiChat/models"
+	"context"
 	"fmt"
+	"github.com/redis/go-redis/v9"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -40,11 +42,32 @@ func InitDB() {
 	} else {
 		err := global.DB.AutoMigrate(&models.User{})
 		if err != nil {
-			global.Logger.Info("database create error")
-			global.Logger.Error(err.Error())
+			global.Logger.Sugar().Error("Failed to connect to Mysql",err.Error())
 			return
 		} else {
-			global.Logger.Info("database successfully initialized")
+			global.Logger.Info("mysql successfully initialized")
 		}
 	}
+}
+
+func InitRedis()  {
+	opt := redis.Options{
+		Addr: fmt.Sprintf(
+			"%s:%d",
+			global.ServiceConfig.RedisDB.Host,
+			global.ServiceConfig.RedisDB.Port,
+			),
+			Password: global.ServiceConfig.RedisDB.Password,
+			DB: 0,
+	}
+	rdb := redis.NewClient(&opt)
+
+	if err := rdb.Ping(context.Background()).Err(); err != nil {
+		global.Logger.Sugar().Error("Failed to connect to Redis:",err.Error())
+		panic(err)
+		return
+	}else {
+		global.Logger.Info("redis successfully initialized")
+	}
+	global.RedisDB = rdb
 }

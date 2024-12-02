@@ -5,6 +5,11 @@ mysql:
   name: 'hi_chat'
   user: 'root'
   password: 'how2j.online'
+redis:
+  host: '127.0.0.1'
+  port: '6379'
+  password: 'how2j.online'
+
 log:
   level: 'info' # 日志等级
   root_dir: './cache/logs' # 日志根目录
