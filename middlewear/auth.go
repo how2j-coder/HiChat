@@ -4,7 +4,6 @@ import (
 	. "HiChat/common"
 	"HiChat/global"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"net/http"
@@ -15,7 +14,6 @@ func AuthRequired() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		// 获取 authorization header：获取前端传过来的信息的
 		tokenStr := ctx.GetHeader("Authorization")
-		fmt.Println(ctx.ClientIP())
 
 		// 验证是否传入token
 		if tokenStr == "" || !strings.HasPrefix(tokenStr, "Bearer ") {
@@ -27,7 +25,7 @@ func AuthRequired() gin.HandlerFunc {
 		tokenStr = tokenStr[len("Bearer "):]
 
 		// 解析Token并验证
-		_, err := DecryptTaken(tokenStr)
+		jwtClaims, err := DecryptTaken(tokenStr)
 		if err != nil {
 			if errors.Is(err, jwt.ErrTokenExpired) {
 				ctx.JSON(http.StatusUnauthorized, Error.WithMsg("认证已过期"))
@@ -38,6 +36,7 @@ func AuthRequired() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
+		ctx.Set("userId", jwtClaims.Data)
 		ctx.Next()
 	}
 }

@@ -35,7 +35,10 @@ func Roter() *gin.Engine {
 	{
 		user.POST("/create", service.Create) // 创建用户
 		user.POST("/login", service.LoginByPassword)
+		user.PATCH("/update", middlewear.AuthRequired(), service.UpDateUser)
 		user.GET("/list", middlewear.AuthRequired(), service.List)
+		user.DELETE("/del", middlewear.AuthRequired(), service.DeleteUser)
+		user.PATCH("/restore", service.RestoreUser)
 	}
 
 	return router

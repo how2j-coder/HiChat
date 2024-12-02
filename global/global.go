@@ -11,3 +11,5 @@ var (
 	DB            *gorm.DB
 	Logger        *zap.Logger
 )
+
+const AuthCtxFiled = "userId"

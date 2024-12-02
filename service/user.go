@@ -15,7 +15,6 @@ import (
 )
 
 
-
 // Create 创建用户
 func Create(ctx *gin.Context) {
 	type TempData struct {
@@ -39,7 +38,7 @@ func Create(ctx *gin.Context) {
 		user.Name = utils.GenerateRandomString(7)
 	}
 
-	findUser, err := dao.FindUser(user)
+	findUser, err := dao.FindUserByEmail(user)
 
 	if err == nil && findUser != nil {
 		ctx.JSON(http.StatusOK, Success.WithMsg("用户已注册"))
@@ -74,14 +73,12 @@ func LoginByPassword(ctx *gin.Context) {
 	if err := ctx.ShouldBind(&temp); err != nil {
 		errText := utils.GetErrorMsg(err, temp)
 		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
-		global.Logger.Error(err.Error())
 		return
 	}
 
 	findUser, err := dao.FindUserByName(temp.Name)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, Error.WithMsg("登录失败"))
-		global.Logger.Error(err.Error())
 		return
 	}
 
@@ -102,6 +99,85 @@ func LoginByPassword(ctx *gin.Context) {
 		"access_token": acToken,
 		"refresh_token":reToken,
 	}))
+}
+
+// DeleteUser 删除用户
+func DeleteUser(ctx *gin.Context)  {
+	userId, _ := ctx.Get(global.AuthCtxFiled)
+	findUser, err := dao.FindUserById(userId.(string))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	if findUser == nil {
+		ctx.JSON(http.StatusOK, NotFound.WithMsg("未查询到用户"))
+		return
+	}
+	err = dao.DeleteUser(*findUser)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success)
+}
+
+// RestoreUser 用户数据恢复
+func RestoreUser(ctx *gin.Context)  {
+	email := ctx.Query("email")
+	findUser, err := dao.FindUserById(email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	if findUser == nil {
+		ctx.JSON(http.StatusOK, NotFound.WithMsg("未查询到用户"))
+		return
+	}
+	user, err := dao.UnDeleteUser(email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success.WithData(user))
+}
+
+// UpDateUser 更新用户数据
+func UpDateUser(ctx *gin.Context)  {
+	type TempUser struct {
+		Avatar string `json:"avatar"`
+		Gender string `json:"gender"`
+		Phone string `json:"phone"`
+		Email string `json:"email"`
+	}
+	userId, _ := ctx.Get(global.AuthCtxFiled)
+	findUser, err := dao.FindUserById(userId.(string))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	if findUser == nil {
+		ctx.JSON(http.StatusOK, NotFound.WithMsg("未查询到用户"))
+		return
+	}
+
+	tempUser := TempUser{}
+	if err := ctx.ShouldBind(&tempUser); err != nil {
+		errText := utils.GetErrorMsg(err, tempUser)
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
+		return
+	}
+
+	findUser.Avatar = tempUser.Avatar
+	findUser.Gender = tempUser.Gender
+	findUser.Phone = tempUser.Phone
+	findUser.Email = tempUser.Email
+
+	_, err = dao.UpdateUser(*findUser)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success.WithData(tempUser))
 }
 
 // List 获取用户列表

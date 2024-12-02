@@ -17,6 +17,19 @@ func CreateUser(user models.User) (*models.User, error) {
 	return &user, nil
 }
 
+// UpdateUser 更新数据
+func UpdateUser(user models.User) (*models.User, error) {
+	tx := global.DB.Model(&user).Select("Avatar",
+		"Gender", "Phone", "Email",
+	).Updates(user)
+
+	if tx.Error != nil {
+		global.Logger.Error(tx.Error.Error())
+		return nil, tx.Error
+	}
+	return &user, nil
+}
+
 // FindUserByName 通过用户名精准查询
 func FindUserByName(name string) (*models.User, error) {
 	user := models.User{}
@@ -30,9 +43,22 @@ func FindUserByName(name string) (*models.User, error) {
 	return &user, nil
 }
 
-// FindUser 查找用户-精准查询(根据email)
-func FindUser(user models.User) (*models.User, error) {
+// FindUserByEmail  查找用户-精准查询(根据email)
+func FindUserByEmail(user models.User) (*models.User, error) {
 	if tx := global.DB.Where("email = ?", user.Email).First(&user); tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		global.Logger.Error(tx.Error.Error())
+		return nil, tx.Error
+	}
+	return &user, nil
+}
+
+// FindUserById  查找用户-精准查询(根据userId)
+func FindUserById(userID string) (*models.User, error)  {
+	user := models.User{}
+	if tx := global.DB.Where("id = ?", userID).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
@@ -51,11 +77,10 @@ func DeleteUser(user models.User) error {
 	return nil
 }
 
-// UnDeleteUser 恢复用户 (根据phone Or email)
-func UnDeleteUser(user models.User) (*models.User, error) {
-	if tx := global.DB.Unscoped().Model(&user).Where(
-		"phone = ?", user.Phone,
-	).Or("email = ?", user.Email).First(&user).Update("deleted_at", nil); tx.Error != nil {
+// UnDeleteUser 恢复用户 (根据 email)
+func UnDeleteUser(email string) (*models.User, error) {
+	user := models.User{}
+	if tx := global.DB.Unscoped().Model(&user).Where("email = ?", email).First(&user).Update("deleted_at", nil); tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
 		return nil, errors.New("用户找回失败")
 	}
