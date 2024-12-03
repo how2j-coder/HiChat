@@ -41,5 +41,11 @@ func Roter() *gin.Engine {
 		user.PATCH("/restore", service.RestoreUser)
 	}
 
+	//文件模块
+	file := v1.Group("/file")
+	{
+		file.POST("/upload", service.FileUpload)
+	}
+
 	return router
 }

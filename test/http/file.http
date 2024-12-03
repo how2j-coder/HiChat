@@ -1,0 +1,23 @@
+### POST upload file
+// @no-log
+#POST http://localhost:8000/api/v1/file/upload
+POST http://localhost:3000/upload
+Content-Type: multipart/form-data;boundary=boundaryForm
+
+--boundaryForm
+Content-Disposition: form-data;name="file";filename="upload_file_1.txt"
+Content-Type: multipart/form-data
+
+#文件地址(与.http文件同目录同级或者后续二进制流)
+< upload_file_1.txt
+
+--boundaryForm
+Content-Disposition: form-data;name="file";filename="upload_file_2.txt"
+Content-Type: multipart/form-data
+
+#文件地址(与.http文件同目录同级或者后续二进制流)
+< upload_file_2.txt
+
+--boundaryForm--
+
+
