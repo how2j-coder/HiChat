@@ -40,7 +40,7 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	} else {
-		err := global.DB.AutoMigrate(&models.User{})
+		err := global.DB.AutoMigrate(&models.User{}, &models.File{})
 		if err != nil {
 			global.Logger.Sugar().Error("Failed to connect to Mysql",err.Error())
 			return

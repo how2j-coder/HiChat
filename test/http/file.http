@@ -1,7 +1,7 @@
-### POST upload file
+### POST upload .txt file (single)
 // @no-log
 #POST http://localhost:8000/api/v1/file/upload
-POST http://localhost:3000/upload
+POST http://localhost:8000/api/v1/file/upload?upload_type=single
 Content-Type: multipart/form-data;boundary=boundaryForm
 
 --boundaryForm
@@ -10,14 +10,44 @@ Content-Type: multipart/form-data
 
 #文件地址(与.http文件同目录同级或者后续二进制流)
 < upload_file_1.txt
+--boundaryForm--
+
+
+### POST upload .png file (single)
+// @no-log
+#POST http://localhost:8000/api/v1/file/upload
+POST http://localhost:8000/api/v1/file/upload?upload_type=single
+Content-Type: multipart/form-data;boundary=boundaryForm
 
 --boundaryForm
-Content-Disposition: form-data;name="file";filename="upload_file_2.txt"
+Content-Disposition: form-data;name="file";filename="music.png"
 Content-Type: multipart/form-data
 
 #文件地址(与.http文件同目录同级或者后续二进制流)
-< upload_file_2.txt
-
+< music.png
 --boundaryForm--
 
+
+
+### POST upload file (multiple)
+# curl -X POST http://localhost:8000/api/v1/file/upload  -F "file=upload_file_1.txt"  -F "file=upload_file_2.txt"
+// @no-log
+POST http://localhost:8000/api/v1/file/upload
+Accept-Encoding: gzip, deflate, br, zstd
+Content-Type: multipart/form-data; boundary=boundary
+
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="upload_file_1.txt"
+
+
+< upload_file_1.txt
+--boundary
+Content-Disposition: form-data; name="file"; filename="upload_file_2.txt"
+
+
+< upload_file_2.txt
+--boundary--
+
+###
 

@@ -45,6 +45,7 @@ func Roter() *gin.Engine {
 	file := v1.Group("/file")
 	{
 		file.POST("/upload", service.FileUpload)
+		file.GET("/download/:fileName", service.FileDownload)
 	}
 
 	return router
