@@ -17,6 +17,16 @@ func UploadSingle(file models.File) (*models.File, error) {
 	return &file, nil
 }
 
+// UploadMultiple 上传多个文件
+func UploadMultiple(files []models.File) (*[]models.File, error) {
+	tx := global.DB.Create(&files)
+	if tx.Error != nil {
+		global.Logger.Error(tx.Error.Error())
+		return nil, tx.Error
+	}
+	return &files, nil
+}
+
 // FindFileFileName 查找文件
 func FindFileFileName(fileName string) (*models.File, error)  {
 	file := models.File{}

@@ -36,6 +36,7 @@ func AuthRequired() gin.HandlerFunc {
 			ctx.Abort()
 			return
 		}
+
 		ctx.Set("userId", jwtClaims.Data)
 		ctx.Next()
 	}

@@ -43,8 +43,8 @@ func (t *localTime) Format(format string) string {
 	return tTime.Format(format)
 }
 
-type commonBaseModel struct {
-	ID        string `gorm:"primary_key" json:"id"`
+type CommonBaseModel struct {
+	ID        string `gorm:"primary_key;type:varchar(36)" json:"id"`
 	CreatedAt *localTime			`json:"created_at,omitempty"`
 	UpdatedAt *localTime      `json:"updated_at,omitempty"`
 	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
@@ -52,7 +52,7 @@ type commonBaseModel struct {
 
 var snowflake = utils.NewSnowflake(int64(52))
 
-func (com *commonBaseModel) BeforeCreate(_ *gorm.DB) (err error) {
+func (com *CommonBaseModel) BeforeCreate(_ *gorm.DB) (err error) {
 	com.ID = strconv.FormatInt(snowflake.GenerateID(), 10)
 	return nil
 }

@@ -44,7 +44,8 @@ func Roter() *gin.Engine {
 	//文件模块
 	file := v1.Group("/file")
 	{
-		file.POST("/upload", service.FileUpload)
+		file.POST("/upload", middlewear.AuthRequired(), service.FileUploadSingle)
+		file.POST("/uploads", middlewear.AuthRequired(), service.FileUploadMultiple)
 		file.GET("/download/:fileName", service.FileDownload)
 	}
 

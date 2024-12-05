@@ -5,7 +5,7 @@ import (
 )
 
 type User struct {
-	commonBaseModel `gorm:"embedded"`
+	CommonBaseModel `gorm:"embedded"`
 	Name            string     `gorm:"comment:用户名" json:"name"`
 	PassWord        string     `gorm:"comment:密码" json:"password,omitempty"`
 	Avatar          string     `gorm:"comment:头像" json:"avatar"`

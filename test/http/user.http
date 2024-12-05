@@ -1,12 +1,17 @@
 ### 创建用户
+###{
+###  "username": "admin",
+###  "email": "admin@online.com",
+###  "password": "1234567"
+###}
 // @no-log
 POST http://localhost:8000/api/v1/user/create
 Content-Type: application/json
 
 {
-  "username": "",
-  "email": "admin@online.com",
-  "password": "1234567"
+  "username": "how2j",
+  "email": "how2j.online@online.com",
+  "password": "how2j.online"
 }
 
 ### 用户登录
