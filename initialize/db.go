@@ -14,6 +14,19 @@ import (
 	"time"
 )
 
+func CreateDBTable(db *gorm.DB, tab ...interface{}) error {
+	for _, v := range tab {
+		exist := db.Migrator().HasTable(v)
+		if !exist {
+			err := db.Migrator().CreateTable(v)
+			if err != nil {
+				return err
+			}
+		}
+	}
+	return nil
+}
+
 func InitDB() {
 	dbConfig := global.ServiceConfig.DB
 	dsn := fmt.Sprintf(
@@ -40,7 +53,7 @@ func InitDB() {
 	if err != nil {
 		panic(err)
 	} else {
-		err := global.DB.AutoMigrate(&models.User{}, &models.File{})
+		err := CreateDBTable(global.DB, &models.User{}, &models.File{})
 		if err != nil {
 			global.Logger.Sugar().Error("Failed to connect to Mysql",err.Error())
 			return
