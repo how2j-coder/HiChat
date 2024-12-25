@@ -1,12 +1,12 @@
 port: '8000'
 mysql:
-  host: '127.0.0.1'
+  host: '172.22.156.47'
   port: '3306'
   name: 'hi_chat'
   user: 'root'
   password: 'how2j.online'
 redis:
-  host: '127.0.0.1'
+  host: '172.22.156.47'
   port: '6379'
   password: 'how2j.online'
 
