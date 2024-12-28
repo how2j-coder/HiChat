@@ -4,6 +4,7 @@ import (
 	"HiChat/global"
 	"HiChat/models"
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -19,6 +20,7 @@ func CreateUser(user models.User) (*models.User, error) {
 
 // UpdateUser 更新数据
 func UpdateUser(user models.User) (*models.User, error) {
+	fmt.Println(user)
 	tx := global.DB.Model(&user).Select("Avatar",
 		"Gender", "Phone", "Email",
 	).Updates(user)

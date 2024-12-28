@@ -46,7 +46,7 @@ func (t *localTime) Format(format string) string {
 type CommonBaseModel struct {
 	ID        string `gorm:"primary_key;type:varchar(36)" json:"id"`
 	CreatedAt *localTime			`json:"created_at,omitempty"`
-	UpdatedAt *localTime      `json:"updated_at,omitempty"`
+	UpdatedAt  *localTime     `gorm:"autoUpdateTime"  json:"updated_at,omitempty"`
 	DeletedAt *gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
 }
 
@@ -56,15 +56,3 @@ func (com *CommonBaseModel) BeforeCreate(_ *gorm.DB) (err error) {
 	com.ID = strconv.FormatInt(snowflake.GenerateID(), 10)
 	return nil
 }
-
-// AfterFind 钩子函数：在查询后处理返回的结果
-//func (com *CommonBaseModel) AfterFind(tx *gorm.DB) (err error) {
-//	// 如果 UpdatedAt 是零值，则将其设置为 null
-//	if com.UpdatedAt.IsZero() {
-//	}
-//	// 如果 DeletedAt 是零值，则将其设置为 nil
-//	//if com.DeletedAt.Time.IsZero() {
-//	//	com.DeletedAt = &gorm.DeletedAt{} // 设置为零值
-//	//}
-//	return nil
-//}

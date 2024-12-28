@@ -49,5 +49,12 @@ func Roter() *gin.Engine {
 		file.GET("/download/:fileName", service.FileDownload)
 	}
 
+	//系统平台
+	platform := v1.Group("platform")
+	{
+		platform.POST("/create", service.CratePlatform)
+		platform.PATCH("/update",  service.UpdatePlatform)
+		platform.GET("/list", service.FindPlatformList)
+	}
 	return router
 }

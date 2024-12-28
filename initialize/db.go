@@ -55,7 +55,7 @@ func InitDB() {
 	} else {
 		err := CreateDBTable(global.DB,
 			&models.User{}, &models.File{},
-			&models.Menu{}, &models.Platform{},
+			&models.Platform{}, &models.Menu{},
 		)
 		if err != nil {
 			global.Logger.Sugar().Error("Failed to connect to Mysql",err.Error())

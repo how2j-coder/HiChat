@@ -40,13 +40,13 @@ func Create(ctx *gin.Context) {
 
 	findUser, err := dao.FindUserByEmail(user)
 
-	if err == nil && findUser != nil {
-		ctx.JSON(http.StatusOK, Success.WithMsg("用户已注册"))
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
 		return
 	}
 
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
+	if  findUser != nil {
+		ctx.JSON(http.StatusOK, Success.WithMsg("用户已注册"))
 		return
 	}
 

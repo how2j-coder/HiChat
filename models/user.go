@@ -9,7 +9,7 @@ type User struct {
 	Name            string     `gorm:"comment:用户名" json:"name"`
 	PassWord        string     `gorm:"comment:密码" json:"password,omitempty"`
 	Avatar          string     `gorm:"comment:头像" json:"avatar"`
-	Gender          string     `gorm:"column:gender;default:male;type:varchar(6);comment:male表示男，female表示女" json:"gender"` //gorm为数据库字段约束
+	Gender          string     `gorm:"column:gender;default:male;type:VARCHAR(6);comment:male表示男，female表示女" json:"gender"` //gorm为数据库字段约束
 	Phone           string     `valid:"matches(^1[3-9]{1}\\d{9}$)" json:"phone"`                                           //valid为条件约束
 	Email           string     `valid:"email" json:"email"`
 	Identity        string     `gorm:"comment:用户身份" json:"identity,omitempty"`

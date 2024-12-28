@@ -92,6 +92,23 @@ func TestSlat(t *testing.T) {
 
 }
 
+func TestPrint(t *testing.T) {
+	type Server struct {
+		Name        string `json:"name,omitempty"`
+		ID          int
+		Enabled     int `json:"enabled,omitempty"`
+	}
+
+	server := Server{
+		Name:        "",
+		ID:      123456,
+		Enabled: 1,
+	}
+	b, _ := json.Marshal(&server)
+	var m map[string]interface{}
+	_ = json.Unmarshal(b, &m)
+	fmt.Println(m)
+}
 
 
 

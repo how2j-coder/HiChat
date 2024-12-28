@@ -1,5 +1,23 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### 创建 系统平台
+POST http://localhost:8000/api/v1/platform/create
+Content-Type: application/json
 
-###
+{
+  "name": "music",
+  "url": "https://music.online",
+  "is_enable": 1
+}
+
+### 更新 系统平台
+PATCH http://localhost:8000/api/v1/platform/update
+Content-Type: application/json
+
+{
+  "id": "",
+  "name": "222",
+  "code": "plat_HDbaSJRoZGDVQaGjnzzVKdBm",
+  "version": ""
+}
+
+### 获取 系统平台 列表
+GET http://localhost:8000/api/v1/platform/list
