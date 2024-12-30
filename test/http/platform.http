@@ -13,9 +13,8 @@ PATCH http://localhost:8000/api/v1/platform/update
 Content-Type: application/json
 
 {
-  "id": "7278644573390454784",
-  "name": "222",
-  "code": "plat_HDbaSJRoZGDVQaGjnzzVKdBm",
+  "id": "7279334160584622080",
+  "platformName": "222",
   "version": ""
 }
 

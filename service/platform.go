@@ -6,7 +6,6 @@ import (
 	"HiChat/global"
 	"HiChat/models"
 	"HiChat/utils"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
@@ -76,17 +75,12 @@ func UpdatePlatform(ctx *gin.Context) {
 		Version      string `json:"version,omitempty"`
 		IsEnable     int    `json:"is_enable,omitempty"`
 	}
-	// TODO: chose
 	temp := tempUpdatePlatform{}
 	reqJson, err := utils.GetJsonAndExistField(ctx, &temp)
 
 	//更新数据
-	fmt.Println(reqJson)
-	fmt.Println(temp)
-
 	if err != nil {
 		errText := utils.GetErrorMsg(err, temp)
-
 		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		return
 	}
@@ -117,6 +111,7 @@ func UpdatePlatform(ctx *gin.Context) {
 	}
 
 
-	//newPlatform, err := dao.UpdatePlatform(temp.ID, reqJson)
- 	ctx.JSON(http.StatusOK, reqJson)
+	newPlatform, err := dao.UpdatePlatform(temp.ID, reqJson)
+
+ 	ctx.JSON(http.StatusOK, newPlatform)
 }

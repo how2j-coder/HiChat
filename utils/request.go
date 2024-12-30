@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"math/rand"
@@ -41,7 +42,7 @@ func GenerateRandomString(length int) string {
 	return string(b)
 }
 
-// GetJsonAndExistField 获取传递的字段 TODO: chose
+// GetJsonAndExistField 获取传递的字段
 func GetJsonAndExistField(ctx *gin.Context, target interface{}) (map[string]interface{}, error) {
 	if err := ctx.ShouldBindBodyWithJSON(target); err != nil {
 		return nil, err
@@ -50,6 +51,10 @@ func GetJsonAndExistField(ctx *gin.Context, target interface{}) (map[string]inte
 	var jsonMap map[string]interface{}
 	if err := ctx.ShouldBindBodyWithJSON(&jsonMap); err != nil {
 		return nil, err
+	}
+	for key, _ := range jsonMap {
+		//jsonMap[ToCamel(key, "_")] = value
+		fmt.Println(ToCamel(key, "_"))
 	}
 
 	return jsonMap, nil
