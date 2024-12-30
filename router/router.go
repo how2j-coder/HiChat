@@ -55,6 +55,13 @@ func Roter() *gin.Engine {
 		platform.POST("/create", service.CratePlatform)
 		platform.PATCH("/update",  service.UpdatePlatform)
 		platform.GET("/list", service.FindPlatformList)
+		platform.DELETE("/del/:id", service.DeletePlatform)
+	}
+
+	//菜单
+	menus := v1.Group("menus")
+	{
+		menus.POST("/create", service.Create)
 	}
 	return router
 }

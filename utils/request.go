@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"math/rand"
@@ -52,9 +51,9 @@ func GetJsonAndExistField(ctx *gin.Context, target interface{}) (map[string]inte
 	if err := ctx.ShouldBindBodyWithJSON(&jsonMap); err != nil {
 		return nil, err
 	}
-	for key, _ := range jsonMap {
-		//jsonMap[ToCamel(key, "_")] = value
-		fmt.Println(ToCamel(key, "_"))
+	for key, value := range jsonMap {
+		jsonMap[CamelToSnake(key)] = value
+
 	}
 
 	return jsonMap, nil

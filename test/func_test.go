@@ -94,13 +94,13 @@ func TestSlat(t *testing.T) {
 
 func TestPrint(t *testing.T) {
 	type Server struct {
-		Name        string `json:"name,omitempty"`
-		ID          int
-		Enabled     int `json:"enabled,omitempty"`
+		Name    string `json:"name,omitempty"`
+		ID      int
+		Enabled int `json:"enabled,omitempty"`
 	}
 
 	server := Server{
-		Name:        "",
+		Name:    "",
 		ID:      123456,
 		Enabled: 1,
 	}
@@ -110,6 +110,12 @@ func TestPrint(t *testing.T) {
 	fmt.Println(m)
 }
 
-
-
-
+func TestToCamel(t *testing.T) {
+	a := "how2j"
+	test := map[string]interface{}{
+		"a": a,
+	}
+	test["a"] = "9999999"
+	fmt.Println(test)
+	fmt.Println(utils.CamelToSnake(a))
+}

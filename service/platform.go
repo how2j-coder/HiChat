@@ -11,16 +11,16 @@ import (
 	"net/http"
 )
 
-type tempPlatform struct {
-	PlatformName string `json:"name"`
-	PlatformCode string `json:"code"`
-	PlatformUrl  string `json:"url" binding:"http_url" httpUrlMsg:"错误的URL地址"`
-	Version      string `json:"version"`
-	IsEnable     int    `json:"is_enable"`
-}
-
 // CratePlatform 创建
 func CratePlatform(ctx *gin.Context) {
+	type tempPlatform struct {
+		PlatformName string `json:"platform_name"`
+		PlatformCode string `json:"platform_code"`
+		PlatformUrl  string `json:"platform_url" binding:"http_url" httpUrlMsg:"错误的URL地址"`
+		Version      string `json:"version"`
+		IsEnable     int    `json:"is_enable"`
+	}
+
 	temp := tempPlatform{}
 	if err := ctx.ShouldBind(&temp); err != nil {
 		errText := utils.GetErrorMsg(err, temp)
@@ -70,8 +70,8 @@ func FindPlatformList(ctx *gin.Context) {
 func UpdatePlatform(ctx *gin.Context) {
 	type tempUpdatePlatform struct {
 		ID           string `json:"id" binding:"required" requiredMsg:"platform id 不能为空"`
-		PlatformName string `json:"name"`
-		PlatformUrl  string `json:"url,omitempty"`
+		PlatformName string `json:"platform_name"`
+		PlatformUrl  string `json:"platform_url,omitempty"`
 		Version      string `json:"version,omitempty"`
 		IsEnable     int    `json:"is_enable,omitempty"`
 	}
@@ -110,8 +110,36 @@ func UpdatePlatform(ctx *gin.Context) {
 		return
 	}
 
-
 	newPlatform, err := dao.UpdatePlatform(temp.ID, reqJson)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error("update platform error", zap.Error(err))
+		return
+	}
 
  	ctx.JSON(http.StatusOK, newPlatform)
+}
+
+// DeletePlatform 删除平台信息
+func DeletePlatform(ctx *gin.Context)  {
+	platformId := ctx.Param("id")
+	//查询id数据
+	findPlatform, err := dao.FindIdToPlatform(platformId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error("find platform error", zap.Error(err))
+		return
+	}
+	if findPlatform == nil {
+		ctx.JSON(http.StatusOK, Success.WithMsg("未查询到数据"))
+		return
+	}
+
+	_, err = dao.DeletePlatform(platformId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error("delete platform error", zap.Error(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success.WithMsg("success"))
 }

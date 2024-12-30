@@ -13,10 +13,13 @@ PATCH http://localhost:8000/api/v1/platform/update
 Content-Type: application/json
 
 {
-  "id": "7279334160584622080",
-  "platformName": "222",
-  "version": ""
+  "id": "7279442665408774144",
+  "platform_name": "how2j",
+  "version": "1.0"
 }
 
 ### 获取 系统平台 列表
 GET http://localhost:8000/api/v1/platform/list
+
+### 删除
+DELETE http://localhost:8000/api/v1/platform/del/123

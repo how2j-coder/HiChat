@@ -61,7 +61,18 @@ func FindPlatformList() ([]*models.Platform, error)  {
 func UpdatePlatform(id string, data map[string]interface{}) (*models.Platform, error)  {
 	platform := models.Platform{}
 	platform.ID = id
-	tx := global.DB.Model(&platform).Omit("PlatformCode").Updates(data).First(&platform)
+	tx := global.DB.Model(&platform).Select("PlatformName", "IsEnable", "PlatformUrl", "Version").Updates(data)
+	if tx.Error != nil {
+		global.Logger.Error(tx.Error.Error())
+		return nil, tx.Error
+	}
+	newPlatform, _ := FindIdToPlatform(id)
+	return newPlatform, nil
+}
+
+func DeletePlatform(id string) (*models.Platform, error)  {
+	platform := models.Platform{}
+	tx := global.DB.Delete(&platform)
 	if tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
 		return nil, tx.Error
