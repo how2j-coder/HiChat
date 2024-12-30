@@ -70,22 +70,24 @@ func FindPlatformList(ctx *gin.Context) {
 // UpdatePlatform 修改
 func UpdatePlatform(ctx *gin.Context) {
 	type tempUpdatePlatform struct {
-		ID           string `json:"id" binding:"required" bindingMsg:"platform id 不能为空"`
+		ID           string `json:"id" binding:"required" requiredMsg:"platform id 不能为空"`
 		PlatformName string `json:"name"`
 		PlatformUrl  string `json:"url,omitempty"`
 		Version      string `json:"version,omitempty"`
 		IsEnable     int    `json:"is_enable,omitempty"`
 	}
+	// TODO: chose
 	temp := tempUpdatePlatform{}
-	reqJson, err := utils.GetJsonAndExistField(ctx, temp)
+	reqJson, err := utils.GetJsonAndExistField(ctx, &temp)
 
 	//更新数据
 	fmt.Println(reqJson)
 	fmt.Println(temp)
 
-	if  err != nil {
-		fmt.Println("errr")
-		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(err.Error()))
+	if err != nil {
+		errText := utils.GetErrorMsg(err, temp)
+
+		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		return
 	}
 

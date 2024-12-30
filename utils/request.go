@@ -43,7 +43,7 @@ func GenerateRandomString(length int) string {
 
 // GetJsonAndExistField 获取传递的字段 TODO: chose
 func GetJsonAndExistField(ctx *gin.Context, target interface{}) (map[string]interface{}, error) {
-	if err := ctx.ShouldBind(&target); err != nil {
+	if err := ctx.ShouldBindBodyWithJSON(target); err != nil {
 		return nil, err
 	}
 
