@@ -16,6 +16,8 @@ const (
 	sequenceBits   = 12                         // 序列号位数
 	maxMachineID   = -1 ^ (-1 << machineIDBits) // 最大机器ID
 	maxSequenceNum = -1 ^ (-1 << sequenceBits)  // 最大序列号
+	timestampLeftShift = machineIDBits + sequenceBits // 计算时间戳左移的位数： 机器ID和序列号的位数之和
+	machineIdLeftShift = sequenceBits // 计算机器ID左移的位数：序列号的位数
 )
 
 type Snowflake struct {

@@ -17,6 +17,10 @@ func Roter() *gin.Engine {
 	//初始化路由
 	router := gin.Default()
 
+	// 注册自定义的参数效验
+	//utils.GisterValidation()
+
+
 	router.ForwardedByClientIP = true
 	err := router.SetTrustedProxies([]string{"127.0.0.1"})
 	if err != nil {
@@ -61,7 +65,10 @@ func Roter() *gin.Engine {
 	//菜单
 	menus := v1.Group("menus")
 	{
-		menus.POST("/create", service.Create)
+		menus.GET("/tree", service.GetMenuTree)
+		menus.POST("/create", service.CreateMenu)
+		menus.PATCH("/update", service.UpdateMenu)
 	}
+
 	return router
 }

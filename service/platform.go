@@ -18,7 +18,7 @@ func CratePlatform(ctx *gin.Context) {
 		PlatformCode string `json:"platform_code"`
 		PlatformUrl  string `json:"platform_url" binding:"http_url" httpUrlMsg:"错误的URL地址"`
 		Version      string `json:"version"`
-		IsEnable     int    `json:"is_enable"`
+		IsEnable     *int    `json:"is_enable"`
 	}
 
 	temp := tempPlatform{}

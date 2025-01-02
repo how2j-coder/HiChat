@@ -2,6 +2,7 @@ package utils
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"math/rand"
@@ -51,10 +52,47 @@ func GetJsonAndExistField(ctx *gin.Context, target interface{}) (map[string]inte
 	if err := ctx.ShouldBindBodyWithJSON(&jsonMap); err != nil {
 		return nil, err
 	}
-	for key, value := range jsonMap {
-		jsonMap[CamelToSnake(key)] = value
 
+	tags := reflect.TypeOf(target).Elem()
+
+	for i := 0; i < tags.NumField(); i++ {
+		field := tags.Field(i)
+		//判断字段是否有 has_required tag 验证字段是否传递
+		//如果前端未传递某个字段，validator会将该字段设置为其类型的零值。
+		//如果前端传递了该字段，并且是零值，validator同样会将其设置为相应的零值。
+		//区分字段是未传递还是传递了零值
+		errMsg := field.Tag.Get("has_required")
+		if errMsg != "" {
+			jsFiled := field.Tag.Get("json")
+			value, ok := jsonMap[jsFiled]
+			if ok {
+				switch field.Type.Kind().String() {
+				case "string":
+					if value == "" {
+						fmt.Println(errMsg)
+						return nil, errors.New(errMsg)
+					}
+				}
+			}
+		}
 	}
 
+
+
+	for key, value := range jsonMap {
+		jsonMap[CamelToSnake(key)] = value
+	}
 	return jsonMap, nil
 }
+
+//// GisterValidation 注册自定义参数效验
+//var hasReqData validator.Func = func(fl validator.FieldLevel) bool {
+//	fmt.Println(12312312)
+//	return true
+//}
+//
+//func GisterValidation() {
+//	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
+//			_ = v.RegisterValidation("has_required", hasReqData)
+//	}
+//}

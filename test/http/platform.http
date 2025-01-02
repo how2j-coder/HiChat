@@ -3,8 +3,8 @@ POST http://localhost:8000/api/v1/platform/create
 Content-Type: application/json
 
 {
-  "name": "music",
-  "url": "https://music.online",
+  "platform_name": "music",
+  "platform_url": "https://music.online",
   "is_enable": 1
 }
 
