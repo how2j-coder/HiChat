@@ -3,11 +3,12 @@ POST http://localhost:8000/api/v1/menus/create
 Content-Type: application/json
 
 {
-  "platform_id":  "7279683064333287424",
+  "platform_id": "7280756958339219456",
   "parent_menu_id": null,
-  "menu_name":  "system",
+  "menu_path": "/system",
+  "menu_name": "system",
   "menu_code": "SystemLayout",
-  "menu_type":  0,
+  "menu_type": 0,
   "menu_file_path": "Layout"
 }
 
@@ -15,24 +16,24 @@ Content-Type: application/json
 POST http://localhost:8000/api/v1/menus/create
 Content-Type: application/json
 
-{
-  "platform_id":  "7279683064333287424",
-  "parent_menu_id": "7280463348075020288",
-  "menu_name":  "user",
-  "menu_code": "User",
-  "menu_type":  1,
-  "menu_file_path": "views/system/user/index.vue"
-}
-//
 //{
-//  "platform_id":  "7279683064333287424",
-//  "parent_menu_id": "7280463348075020288",
+//  "platform_id":  "7280756958339219456",
+//  "parent_menu_id": "7280757919182962688",
 //  "menu_name":  "unit",
+//  "menu_path": "/unit",
 //  "menu_code": "Unit",
 //  "menu_type":  1,
 //  "menu_file_path": "views/system/unit/index.vue"
 //}
-
+{
+  "platform_id": "7280756958339219456",
+  "parent_menu_id": "7280757919182962688",
+  "menu_path": "/user",
+  "menu_name": "user",
+  "menu_code": "User",
+  "menu_type": 1,
+  "menu_file_path": "views/system/user/index.vue"
+}
 
 
 ### 更新菜单信息

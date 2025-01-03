@@ -17,10 +17,15 @@ func CratePlatform(platform models.Platform) (*models.Platform, error)  {
 	return &platform, nil
 }
 
-// FindNameToPlatform 根据名称查找
-func FindNameToPlatform(platformName string) (*models.Platform, error)  {
+// FindNameToPlatform 根据名称查找, 指定排除某个id
+func FindNameToPlatform(platformName string, platformId string) (*models.Platform, error)  {
 	platform := models.Platform{}
-	tx := global.DB.Where("platform_name = ?", platformName).First(&platform)
+	var tx *gorm.DB
+	if platformId != "" {
+		tx = global.DB.Where("platform_name = ? AND id <> ?", platformName, platformId).First(&platform)
+	} else {
+		tx = global.DB.Where("platform_name = ?", platformName).First(&platform)
+	}
 	if tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil

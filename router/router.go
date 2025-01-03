@@ -58,8 +58,9 @@ func Roter() *gin.Engine {
 	{
 		platform.POST("/create", service.CratePlatform)
 		platform.PATCH("/update",  service.UpdatePlatform)
+		platform.GET("/query/:id", service.FindPlatform)
 		platform.GET("/list", service.FindPlatformList)
-		platform.DELETE("/del/:id", service.DeletePlatform)
+		platform.DELETE("/delete/:id", service.DeletePlatform)
 	}
 
 	//菜单
