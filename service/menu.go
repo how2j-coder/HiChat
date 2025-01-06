@@ -180,4 +180,21 @@ func GetMenuList(ctx *gin.Context)  {
 	ctx.JSON(http.StatusOK, Success.WithData(menus))
 }
 
+// GetUserMenuList 根据用户权限获取菜单列表
+func GetUserMenuList(ctx *gin.Context)  {
+	platformId := ctx.Param("platform_id")
+	if platformId == "" {
+		ctx.JSON(http.StatusOK, Error.WithMsg("系统ID不能为空"))
+		return
+	}
+	menus, err := dao.FindPlatformToMenus(platformId)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, Success.WithData(menus))
+}
+
 
