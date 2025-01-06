@@ -5,6 +5,7 @@ import (
 	"HiChat/dao"
 	"HiChat/global"
 	"HiChat/models"
+
 	"HiChat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -118,6 +119,17 @@ func UpdateMenu(ctx *gin.Context) {
 }
 
 // GetMenuTree 获取菜单树
+func buildMenuTree(menus []*models.Menu, parentId string) []*models.Menu {
+	menuTree := make([]*models.Menu, 0)
+	for _, menu := range menus {
+		if menu.ParentMenuID == parentId {
+			children := buildMenuTree(menus, menu.ID)
+			menu.Children = children
+			menuTree  = append(menuTree, menu)
+		}
+	}
+	return menuTree
+}
 func GetMenuTree(ctx *gin.Context) {
 	allPlatform, err := dao.FindPlatformList()
 	if err != nil {
@@ -137,14 +149,35 @@ func GetMenuTree(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, Success.WithData(menuTree))
 }
 
-func buildMenuTree(menus []*models.Menu, parentId string) []*models.Menu {
-	menuTree := make([]*models.Menu, 0)
-	for _, menu := range menus {
-		if menu.ParentMenuID == parentId {
-			children := buildMenuTree(menus, menu.ID)
-			menu.Children = children
-			menuTree  = append(menuTree, menu)
+// GetMenuList 获取菜单列表
+func GetMenuList(ctx *gin.Context)  {
+	platformId := ctx.Param("platform_id")
+	var backendPlatform models.Platform
+
+	if platformId == "" {
+		platList, _ := dao.FindPlatformList()
+		backendPlatform = *platList[0]
+	} else {
+		findPlat, err := dao.FindIdToPlatform(platformId)
+		if err != nil {
+			ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+			return
 		}
+		if findPlat == nil {
+			ctx.JSON(http.StatusOK, Error.WithMsg("为查询到平台数据"))
+			return
+		}
+		backendPlatform = *findPlat
 	}
-	return menuTree
+
+	menus, err := dao.FindPlatformToMenus(backendPlatform.ID)
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, Success.WithData(menus))
 }
+
+

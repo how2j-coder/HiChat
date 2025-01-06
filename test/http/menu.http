@@ -18,7 +18,7 @@ Content-Type: application/json
 
 //{
 //  "platform_id":  "7280756958339219456",
-//  "parent_menu_id": "7280757919182962688",
+//  "parent_menu_id": "7281858506603577344",
 //  "menu_name":  "unit",
 //  "menu_path": "/unit",
 //  "menu_code": "Unit",
@@ -27,7 +27,7 @@ Content-Type: application/json
 //}
 {
   "platform_id": "7280756958339219456",
-  "parent_menu_id": "7280757919182962688",
+  "parent_menu_id": "7281858506603577344",
   "menu_path": "/user",
   "menu_name": "user",
   "menu_code": "User",
@@ -51,3 +51,6 @@ Content-Type: application/json
 
 ### 获取菜单树
 GET http://localhost:8000/api/v1/menus/tree
+
+### 获取菜单列表
+GET http://localhost:8000/api/v1/menus/list
