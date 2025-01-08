@@ -8,7 +8,7 @@ type Response struct {
 	Code    int         `json:"code"`    // 业务状态码 200
 	Status  bool        `json:"status"`  // 状态信息 True | False
 	Message string      `json:"message"` // 返回信息 Operation successful
-	Data    interface{} `json:"data"`    // 返回数据 Data
+	Result    interface{} `json:"result"`    // 返回数据 Result
 }
 
 // WithMsg 自定义响应信息
@@ -17,7 +17,7 @@ func (res *Response) WithMsg(message string) Response {
 		Code:    res.Code,
 		Status:  res.Status,
 		Message: message,
-		Data:    res.Data,
+		Result:    res.Result,
 	}
 }
 
@@ -27,7 +27,7 @@ func (res *Response) WithData(data interface{}) Response {
 		Code:    res.Code,
 		Status:  res.Status,
 		Message: res.Message,
-		Data:    data,
+		Result:    data,
 	}
 }
 
@@ -41,7 +41,7 @@ func (res *Response) ToString() string {
 	}{
 		Code:    res.Code,
 		Message: res.Message,
-		Data:    res.Data,
+		Data:    res.Result,
 	}
 	raw, _ := json.Marshal(err)
 	return string(raw)
@@ -53,7 +53,7 @@ func response(code int, status bool, msg string) *Response {
 		Code:    code,
 		Status:  status,
 		Message: msg,
-		Data:    nil,
+		Result:    nil,
 	}
 }
 

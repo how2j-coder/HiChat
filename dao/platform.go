@@ -17,10 +17,15 @@ func CratePlatform(platform models.Platform) (*models.Platform, error)  {
 	return &platform, nil
 }
 
-// FindNameToPlatform 根据名称查找
-func FindNameToPlatform(platformName string) (*models.Platform, error)  {
+// FindNameToPlatform 根据名称查找, 可指定排除某个id
+func FindNameToPlatform(platformName string, platformId string) (*models.Platform, error)  {
 	platform := models.Platform{}
-	tx := global.DB.Where("platform_name = ?", platformName).First(&platform)
+	var tx *gorm.DB
+	if platformId != "" {
+		tx = global.DB.Where("platform_name = ? AND id <> ?", platformName, platformId).First(&platform)
+	} else {
+		tx = global.DB.Where("platform_name = ?", platformName).First(&platform)
+	}
 	if tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -61,7 +66,9 @@ func FindPlatformList() ([]*models.Platform, error)  {
 func UpdatePlatform(id string, data map[string]interface{}) (*models.Platform, error)  {
 	platform := models.Platform{}
 	platform.ID = id
-	tx := global.DB.Model(&platform).Select("PlatformName", "IsEnable", "PlatformUrl", "Version").Updates(data)
+	tx := global.DB.Model(&platform).Select(
+		"PlatformName", "IsEnable", "PlatformUrl", "Version",
+		).Updates(data)
 	if tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
 		return nil, tx.Error
@@ -70,8 +77,9 @@ func UpdatePlatform(id string, data map[string]interface{}) (*models.Platform, e
 	return newPlatform, nil
 }
 
-func DeletePlatform(id string) (*models.Platform, error)  {
+func DeletePlatform(platformId string) (*models.Platform, error)  {
 	platform := models.Platform{}
+	platform.ID = platformId
 	tx := global.DB.Delete(&platform)
 	if tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())

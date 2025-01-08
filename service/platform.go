@@ -18,7 +18,7 @@ func CratePlatform(ctx *gin.Context) {
 		PlatformCode string `json:"platform_code"`
 		PlatformUrl  string `json:"platform_url" binding:"http_url" httpUrlMsg:"错误的URL地址"`
 		Version      string `json:"version"`
-		IsEnable     int    `json:"is_enable"`
+		IsEnable     *int    `json:"is_enable"`
 	}
 
 	temp := tempPlatform{}
@@ -27,7 +27,7 @@ func CratePlatform(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		return
 	}
-	findPlatform, err := dao.FindNameToPlatform(temp.PlatformName)
+	findPlatform, err := dao.FindNameToPlatform(temp.PlatformName, "")
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		return
@@ -41,7 +41,7 @@ func CratePlatform(ctx *gin.Context) {
 		PlatformName: temp.PlatformName,
 		PlatformCode: "plat_" + platCode,
 		PlatformUrl:  temp.PlatformUrl,
-		Version:      temp.Version,
+		Version:      &temp.Version,
 		IsEnable:     temp.IsEnable,
 	}
 	_, err = dao.CratePlatform(platform)
@@ -49,7 +49,7 @@ func CratePlatform(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		return
 	}
-	ctx.JSON(http.StatusOK, Success.WithMsg("创建成功"))
+	ctx.JSON(http.StatusOK, Success)
 }
 
 // FindPlatformList 获取平台列表
@@ -99,7 +99,7 @@ func UpdatePlatform(ctx *gin.Context) {
 	}
 
 	//判断名称是否重复
-	findPlatform, err = dao.FindNameToPlatform(temp.PlatformName)
+	findPlatform, err = dao.FindNameToPlatform(temp.PlatformName, temp.ID)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error("find platform error", zap.Error(err))
@@ -117,7 +117,20 @@ func UpdatePlatform(ctx *gin.Context) {
 		return
 	}
 
- 	ctx.JSON(http.StatusOK, newPlatform)
+ 	ctx.JSON(http.StatusOK, Success.WithData(newPlatform))
+}
+
+// FindPlatform 获取平台详情信息
+func FindPlatform(ctx *gin.Context) {
+	platformId := ctx.Param("id")
+	//查询id数据
+	findPlatform, err := dao.FindIdToPlatform(platformId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error("find platform error", zap.Error(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success.WithData(findPlatform))
 }
 
 // DeletePlatform 删除平台信息

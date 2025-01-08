@@ -9,8 +9,8 @@ POST http://localhost:8000/api/v1/user/create
 Content-Type: application/json
 
 {
-  "username": "how2j",
-  "email": "how2j.online@online.com",
+  "username": "admin",
+  "email": "coder@how2j.online",
   "password": "how2j.online"
 }
 

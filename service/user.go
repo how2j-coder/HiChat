@@ -38,7 +38,7 @@ func Create(ctx *gin.Context) {
 		user.Name = utils.GenerateRandomString(7)
 	}
 
-	findUser, err := dao.FindUserByEmail(user)
+	findUser, err := dao.FindUserByEmail(user.Email)
 
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, Error.WithMsg(err.Error()))
@@ -66,17 +66,17 @@ func Create(ctx *gin.Context) {
 // LoginByPassword 用户登录
 func LoginByPassword(ctx *gin.Context) {
 	type TempData struct {
-		Name     string `json:"username" binding:"required" requiredMsg:"用户名不能为空"`
+		Account     string `json:"account" binding:"required" requiredMsg:"账号不能为空"`
 		Password string `json:"password" binding:"required" requiredMsg:"密码不能为空"`
 	}
 	temp := TempData{}
 	if err := ctx.ShouldBind(&temp); err != nil {
 		errText := utils.GetErrorMsg(err, temp)
-		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
+		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg(errText))
 		return
 	}
 
-	findUser, err := dao.FindUserByName(temp.Name)
+	findUser, err := dao.FindUserByEmail(temp.Account)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, Error.WithMsg("登录失败"))
 		return

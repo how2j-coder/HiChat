@@ -1,0 +1,56 @@
+### 创建菜单
+POST http://localhost:8000/api/v1/menus/create
+Content-Type: application/json
+
+{
+  "platform_id": "7280756958339219456",
+  "parent_menu_id": null,
+  "menu_path": "/system",
+  "menu_name": "system",
+  "menu_code": "SystemLayout",
+  "menu_type": 0,
+  "menu_file_path": "Layout"
+}
+
+### 创建子级菜单
+POST http://localhost:8000/api/v1/menus/create
+Content-Type: application/json
+
+//{
+//  "platform_id":  "7280756958339219456",
+//  "parent_menu_id": "7281858506603577344",
+//  "menu_name":  "unit",
+//  "menu_path": "/unit",
+//  "menu_code": "Unit",
+//  "menu_type":  1,
+//  "menu_file_path": "views/system/unit/index.vue"
+//}
+{
+  "platform_id": "7280756958339219456",
+  "parent_menu_id": "7281858506603577344",
+  "menu_path": "/user",
+  "menu_name": "user",
+  "menu_code": "User",
+  "menu_type": 1,
+  "menu_file_path": "views/system/user/index.vue"
+}
+
+
+### 更新菜单信息
+PATCH http://localhost:8000/api/v1/menus/update
+Content-Type: application/json
+
+{
+  "id": "7279749898193551360",
+  "parent_menu_id": null,
+  "menu_name": "system",
+  "menu_code": "SystemLayout",
+  "menu_type": 0,
+  "menu_file_path": "Layout"
+}
+
+### 获取菜单树
+GET http://localhost:8000/api/v1/menus/tree
+
+### 获取菜单列表
+GET http://localhost:8000/api/v1/menus/list

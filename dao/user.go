@@ -46,8 +46,9 @@ func FindUserByName(name string) (*models.User, error) {
 }
 
 // FindUserByEmail  查找用户-精准查询(根据email)
-func FindUserByEmail(user models.User) (*models.User, error) {
-	if tx := global.DB.Where("email = ?", user.Email).First(&user); tx.Error != nil {
+func FindUserByEmail(email string) (*models.User, error) {
+	var user models.User
+	if tx := global.DB.Where("email = ?", email).First(&user); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}
