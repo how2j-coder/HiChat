@@ -1,13 +1,12 @@
 package service
 
 import (
-	"HiChat/models"
 	"github.com/gin-gonic/gin"
 )
 
 type tempMenus struct {
-	PlatformID string `json:"platform_id"`
-	ParentMenuID int `json:"parent_menu_id"`
+	PlatformID string `json:"platform_id" binding:"required"`
+	ParentMenuID int `json:"parent_menu_id" binding:"required"`
 	MenuName string `json:"menu_name"`
 	MenuCode string `json:"menu_code"`
 	MenuType int `json:"menu_type"`
@@ -19,8 +18,5 @@ type tempMenus struct {
 }
 
 func CreateMus(ctx *gin.Context)  {
-	temp := tempMenus{}
-
-
 
 }
