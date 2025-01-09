@@ -3,11 +3,11 @@ POST http://localhost:8000/api/v1/menus/create
 Content-Type: application/json
 
 {
-  "platform_id": "7282783687727595520",
+  "platform_id": "7283045581981958144",
   "parent_menu_id": null,
-  "menu_path": "/system",
-  "menu_name": "system",
-  "menu_code": "SystemLayout",
+  "menu_path": "/create",
+  "menu_name": "create",
+  "menu_code": "CreateSystem",
   "menu_type": 0,
   "menu_file_path": "Layout"
 }
@@ -17,14 +17,24 @@ POST http://localhost:8000/api/v1/menus/create
 Content-Type: application/json
 
 {
-  "platform_id":  "7282783687727595520",
-  "parent_menu_id": "7282784362435919872",
-  "menu_name":  "unit",
-  "menu_path": "/unit",
-  "menu_code": "Unit",
+  "platform_id":  "7280756958339219456",
+  "parent_menu_id": "7281858506603577344",
+  "menu_name":  "menu",
+  "menu_path": "menu",
+  "menu_code": "Menu",
   "menu_type":  1,
-  "menu_file_path": "views/system/unit/index.vue"
+  "menu_file_path": "views/system/menu/index.vue"
 }
+
+//{
+//  "platform_id":  "7282783687727595520",
+//  "parent_menu_id": "7282784362435919872",
+//  "menu_name":  "unit",
+//  "menu_path": "/unit",
+//  "menu_code": "Unit",
+//  "menu_type":  1,
+//  "menu_file_path": "views/system/unit/index.vue"
+//}
 //{
 //  "platform_id": "7282783687727595520",
 //  "parent_menu_id": "7282784362435919872",
