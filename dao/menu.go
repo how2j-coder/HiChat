@@ -72,15 +72,31 @@ func UpdateMenuIdToMenu(menuId string, data map[string]interface{}) (*models.Men
 	return &menu, nil
 }
 
-// FindPlatformToMenus 获取菜单树结构数据
-func FindPlatformToMenus(platformID string) ([]*models.Menu, error)  {
+// FindPlatformToMenus 获取平台对应的菜单数据
+func FindPlatformToMenus(platformID string, menuID string) ([]*models.Menu, error)  {
 	var menu []*models.Menu
-	tx := global.DB.Where("platform_id = ?", platformID).Find(&menu)
-	if tx.Error != nil {
-		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-			return nil, nil
+	if menuID == "" {
+		tx := global.DB.Where("platform_id = ?", platformID).Find(&menu)
+		if tx.Error != nil {
+			if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+				return nil, nil
+			}
+			return nil, tx.Error
 		}
-		return nil, tx.Error
+	} else {
+		tx := global.DB.Where(
+			"platform_id = ? AND parent_menu_id = ?",
+			platformID,
+			menuID,
+			).Find(&menu)
+		if tx.Error != nil {
+			if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+				return nil, nil
+			}
+			return nil, tx.Error
+		}
 	}
+
+
 	return menu, nil
 }

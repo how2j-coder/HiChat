@@ -18,14 +18,10 @@ func CratePlatform(platform models.Platform) (*models.Platform, error)  {
 }
 
 // FindNameToPlatform 根据名称查找, 可指定排除某个id
-func FindNameToPlatform(platformName string, platformId string) (*models.Platform, error)  {
+func FindNameToPlatform(platformName string) (*models.Platform, error)  {
 	platform := models.Platform{}
 	var tx *gorm.DB
-	if platformId != "" {
-		tx = global.DB.Where("platform_name = ? AND id <> ?", platformName, platformId).First(&platform)
-	} else {
-		tx = global.DB.Where("platform_name = ?", platformName).First(&platform)
-	}
+	tx = global.DB.Where("platform_name = ?", platformName).First(&platform)
 	if tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
@@ -50,10 +46,14 @@ func FindIdToPlatform(platformId string) (*models.Platform, error)  {
 	return &platform, nil
 }
 
-// FindPlatformList 查询平台信息
-func FindPlatformList() ([]*models.Platform, error)  {
+// FindPlatformList 查询所有平台信息
+func FindPlatformList(isEnable int) ([]*models.Platform, error)  {
 	var platforms []*models.Platform
-	if tx := global.DB.Find(&platforms); tx.Error != nil {
+	tx := global.DB.Model(&models.Platform{})
+	if isEnable == 1 {
+		tx = tx.Where("is_enable = ?", isEnable)
+	}
+	if tx.Find(&platforms); tx.Error != nil {
 		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
 			return nil, nil
 		}

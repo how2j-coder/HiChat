@@ -5,7 +5,6 @@ import (
 	"HiChat/dao"
 	"HiChat/global"
 	"HiChat/models"
-
 	"HiChat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -120,57 +119,46 @@ func UpdateMenu(ctx *gin.Context) {
 
 // GetMenuList 获取菜单列表
 func GetMenuList(ctx *gin.Context)  {
-	platformId := ctx.Param("menu_id")
-	fmt.Println(platformId)
-	//var backendPlatform models.Platform
-	//
-	//if platformId == "" {
-	//	platList, _ := dao.FindPlatformList()
-	//	backendPlatform = *platList[0]
-	//} else {
-	//	findPlat, err := dao.FindIdToPlatform(platformId)
-	//	if err != nil {
-	//		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
-	//		return
-	//	}
-	//	backendPlatform = *findPlat
-	//}
-	//
-	//menus, err := dao.FindPlatformToMenus(backendPlatform.ID)
-	//
-	//if err != nil {
-	//	ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
-	//	return
-	//}
+	platformId := ctx.DefaultQuery("pla_id", "")
+	menuId := ctx.DefaultQuery("menu_id", "")
 
-	ctx.JSON(http.StatusOK, Success.WithData("success"))
-}
-
-// GetUserMenuList 根据用户权限获取菜单列表
-func GetUserMenuList(ctx *gin.Context)  {
-	platformId := ctx.Param("platform_id")
-	if platformId == "" {
-		ctx.JSON(http.StatusOK, Error.WithMsg("系统ID不能为空"))
-		return
+	if platformId == ""{
+		platformList, _ := dao.FindPlatformList(1)
+		platformId = platformList[0].ID
 	}
-	menus, err := dao.FindPlatformToMenus(platformId)
 
+	menus, err := dao.FindPlatformToMenus(platformId, menuId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error(err.Error())
 		return
 	}
 
 	ctx.JSON(http.StatusOK, Success.WithData(menus))
 }
 
+// Tree 根据系统构建菜单树
+type Tree struct {
+	ID string `json:"id"`
+	PId string `json:"pid"`
+	PlatformID string `json:"platform_id"`
+	Name string `json:"name"`
+	Children []*Tree `json:"children"`
+}
 // 构建菜单树
-func buildMenuTree(menus []*models.Menu, parentId string) []*models.Menu {
-	menuTree := make([]*models.Menu, 0)
+func buildMenuTree(menus []*models.Menu, parentId string, PlatformId string) []*Tree {
+	menuTree := make([]*Tree, 0)
 	for _, menu := range menus {
 		if menu.ParentMenuID == parentId {
-			children := buildMenuTree(menus, menu.ID)
-			menu.Children = children
-			menuTree  = append(menuTree, menu)
+			newMenu := Tree{
+				ID: menu.ID,
+				PId: menu.ParentMenuID,
+				PlatformID: PlatformId,
+				Name: menu.MenuName,
+			}
+			children := buildMenuTree(menus, menu.ID, PlatformId)
+			newMenu.Children = children
+			menuTree  = append(menuTree, &newMenu)
 		}
 	}
 	return menuTree
@@ -178,19 +166,28 @@ func buildMenuTree(menus []*models.Menu, parentId string) []*models.Menu {
 
 // GetMenuTree 根据platform获取菜单树
 func GetMenuTree(ctx *gin.Context) {
-	allPlatform, err := dao.FindPlatformList()
+	allPlatform, err := dao.FindPlatformList(1)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		return
 	}
 
-	var menuTree [][]*models.Menu
+	var menuTree []*Tree
 	//查找所有平台
 	for i := 0; i < len(allPlatform); i++ {
 		//获取对应平台的所有菜单
-		platformToMenus, _ := dao.FindPlatformToMenus(allPlatform[i].ID)
-		treeMenu := buildMenuTree(platformToMenus, "")
-		menuTree = append(menuTree, treeMenu)
+		platformToMenus, _ := dao.FindPlatformToMenus(allPlatform[i].ID, "")
+		treeMenu := buildMenuTree(platformToMenus, "", allPlatform[i].ID)
+		platformToMenu := Tree{
+			ID: "",
+			PId: "",
+			PlatformID: allPlatform[i].ID,
+			Name: allPlatform[i].PlatformName,
+		}
+		if treeMenu != nil && len(treeMenu) > 0 {
+			platformToMenu.Children = treeMenu
+			menuTree = append(menuTree, &platformToMenu)
+		}
 	}
 
 	ctx.JSON(http.StatusOK, Success.WithData(menuTree))

@@ -17,8 +17,8 @@ POST http://localhost:8000/api/v1/menus/create
 Content-Type: application/json
 
 {
-  "platform_id":  "7280756958339219456",
-  "parent_menu_id": "7281858506603577344",
+  "platform_id":  "7282783687727595520",
+  "parent_menu_id": "7282784362435919872",
   "menu_name":  "menu",
   "menu_path": "menu",
   "menu_code": "Menu",

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"net/http"
+	"strconv"
 )
 
 // CratePlatform 创建
@@ -27,7 +28,7 @@ func CratePlatform(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, ParamsNilError.WithMsg(errText))
 		return
 	}
-	findPlatform, err := dao.FindNameToPlatform(temp.PlatformName, "")
+	findPlatform, err := dao.FindNameToPlatform(temp.PlatformName)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		return
@@ -54,7 +55,9 @@ func CratePlatform(ctx *gin.Context) {
 
 // FindPlatformList 获取平台列表
 func FindPlatformList(ctx *gin.Context) {
-	list, err := dao.FindPlatformList()
+	platformEnable := ctx.DefaultQuery("enable", "0")
+	enableNum, _ := strconv.Atoi(platformEnable)
+	list, err := dao.FindPlatformList(enableNum)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error("find platform list error", zap.Error(err))
@@ -99,13 +102,13 @@ func UpdatePlatform(ctx *gin.Context) {
 	}
 
 	//判断名称是否重复
-	findPlatform, err = dao.FindNameToPlatform(temp.PlatformName, temp.ID)
+	findPlatform, err = dao.FindNameToPlatform(temp.PlatformName)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error("find platform error", zap.Error(err))
 		return
 	}
-	if findPlatform != nil {
+	if findPlatform != nil && findPlatform.ID != temp.ID {
 		ctx.JSON(http.StatusOK, Success.WithMsg("平台名称已存在"))
 		return
 	}
