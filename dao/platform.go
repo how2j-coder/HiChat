@@ -17,7 +17,7 @@ func CratePlatform(platform models.Platform) (*models.Platform, error)  {
 	return &platform, nil
 }
 
-// FindNameToPlatform 根据名称查找, 可指定排除某个id
+// FindNameToPlatform 根据名称查找
 func FindNameToPlatform(platformName string) (*models.Platform, error)  {
 	platform := models.Platform{}
 	var tx *gorm.DB

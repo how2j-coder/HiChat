@@ -8,6 +8,7 @@ import (
 	"HiChat/utils"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -69,6 +70,10 @@ func UpdateMenu(ctx *gin.Context) {
 		MenuCode string `json:"menu_code" has_required:"菜单Code不能为空"`
 		MenuPath string `json:"menu_path" has_required:"菜单路由地址不能为空"`
 		MenuFilePath string `json:"menu_file_path" has_required:"模板路径不能为空"`
+		IsVisible *int  `json:"is_visible"`
+		IsEnabled *int `json:"is_enabled"`
+		IsRefresh *int `json:"is_refresh"`
+		SortOrder *int  `json:"sort_order"`
 	}{}
 
 	reqJson, err := utils.GetJsonAndExistField(ctx, &temp)
@@ -102,7 +107,7 @@ func UpdateMenu(ctx *gin.Context) {
 		return
 	}
 
-	if findMenu != nil {
+	if findMenu != nil && findMenu.ID != temp.ID {
 		ctx.JSON(http.StatusOK, Error.WithMsg("菜单Code不能重复"))
 		return
 	}
@@ -117,17 +122,17 @@ func UpdateMenu(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, Success.WithMsg("success"))
 }
 
-// GetMenuList 获取菜单列表
-func GetMenuList(ctx *gin.Context)  {
-	platformId := ctx.DefaultQuery("pla_id", "")
+// GetParentToMenuList 根据父级获取菜单列表
+func GetParentToMenuList(ctx *gin.Context)  {
+	platformId := ctx.DefaultQuery("platform_id", "")
 	menuId := ctx.DefaultQuery("menu_id", "")
 
 	if platformId == ""{
-		platformList, _ := dao.FindPlatformList(1)
-		platformId = platformList[0].ID
+		ctx.JSON(http.StatusOK, ParamsNilError.WithMsg("平台ID不能为空"))
+		return
 	}
 
-	menus, err := dao.FindPlatformToMenus(platformId, menuId)
+	menus, err := dao.FindChildrenMenus(platformId, menuId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error(err.Error())
@@ -135,6 +140,31 @@ func GetMenuList(ctx *gin.Context)  {
 	}
 
 	ctx.JSON(http.StatusOK, Success.WithData(menus))
+}
+
+// GetMenuList 获取菜单列表
+func GetMenuList(ctx *gin.Context)  {
+	menus, err := dao.FindMenus()
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error(err.Error())
+		return
+	}
+
+	ctx.JSON(http.StatusOK, Success.WithData(menus))
+}
+
+// GetMenuDetail 获取菜单详情数据
+func GetMenuDetail(ctx *gin.Context)  {
+	menuId := ctx.Param("id")
+	//查询id数据
+	findMenu, err := dao.FindMenuDetail(menuId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
+		global.Logger.Error("find platform error", zap.Error(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, Success.WithData(findMenu))
 }
 
 // Tree 根据系统构建菜单树
@@ -176,10 +206,10 @@ func GetMenuTree(ctx *gin.Context) {
 	//查找所有平台
 	for i := 0; i < len(allPlatform); i++ {
 		//获取对应平台的所有菜单
-		platformToMenus, _ := dao.FindPlatformToMenus(allPlatform[i].ID, "")
+		platformToMenus, _ := dao.FindPlatformToMenus(allPlatform[i].ID)
 		treeMenu := buildMenuTree(platformToMenus, "", allPlatform[i].ID)
 		platformToMenu := Tree{
-			ID: "",
+			ID: allPlatform[i].ID,
 			PId: "",
 			PlatformID: allPlatform[i].ID,
 			Name: allPlatform[i].PlatformName,

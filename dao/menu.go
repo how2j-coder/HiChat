@@ -72,31 +72,63 @@ func UpdateMenuIdToMenu(menuId string, data map[string]interface{}) (*models.Men
 	return &menu, nil
 }
 
-// FindPlatformToMenus 获取平台对应的菜单数据
-func FindPlatformToMenus(platformID string, menuID string) ([]*models.Menu, error)  {
+// FindMenus 获取菜单列表数据
+func FindMenus() ([]*models.Menu, error) {
 	var menu []*models.Menu
-	if menuID == "" {
-		tx := global.DB.Where("platform_id = ?", platformID).Find(&menu)
-		if tx.Error != nil {
-			if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-				return nil, nil
-			}
-			return nil, tx.Error
+	tx := global.DB.Find(&menu)
+	if tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
 		}
-	} else {
-		tx := global.DB.Where(
-			"platform_id = ? AND parent_menu_id = ?",
-			platformID,
-			menuID,
-			).Find(&menu)
-		if tx.Error != nil {
-			if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-				return nil, nil
-			}
-			return nil, tx.Error
+		return nil, tx.Error
+	}
+	return menu, nil
+}
+
+// FindChildrenMenus 获取子菜单数据
+func FindChildrenMenus(platformID string, menuID string) ([]*models.Menu, error) {
+	var menu []*models.Menu
+	tx := global.DB.Where(
+		"platform_id = ? AND parent_menu_id = ?",
+		platformID,
+		menuID,
+	).Find(&menu)
+	if tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
 		}
+		return nil, tx.Error
 	}
 
+	return menu, nil
+}
+
+// FindPlatformToMenus 获取平台对应的所有菜单数据
+func FindPlatformToMenus(platformID string) ([]*models.Menu, error)  {
+	var menu []*models.Menu
+	tx := global.DB.Where(
+		"platform_id = ?",
+		platformID,
+	).Find(&menu)
+	if tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, tx.Error
+	}
 
 	return menu, nil
+}
+
+// FindMenuDetail 获取菜单详情数据
+func FindMenuDetail(menuId string) (*models.Menu, error) {
+	menu :=  models.Menu{}
+	tx := global.DB.Where("id = ?", menuId).First(&menu)
+	if tx.Error != nil {
+		if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, tx.Error
+	}
+	return &menu, nil
 }

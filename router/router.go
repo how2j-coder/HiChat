@@ -70,6 +70,8 @@ func Roter() *gin.Engine {
 		menus.POST("/create", service.CreateMenu)
 		menus.PATCH("/update", service.UpdateMenu)
 		menus.GET("/list", service.GetMenuList)
+		menus.GET("/children", service.GetParentToMenuList)
+		menus.GET("/query/:id", service.GetMenuDetail)
 	}
 
 	return router
