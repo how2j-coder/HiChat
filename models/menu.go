@@ -8,8 +8,10 @@ type Menu struct {
 	MenuName string `gorm:"comment:菜单名称" json:"menu_name" binding:"required" requiredMsg:"菜单名称不能为空"`
 	MenuCode string `gorm:"comment:菜单Code" json:"menu_code" binding:"required" requiredMsg:"菜单Code不能为空"`
 	MenuType *int `gorm:"default:1;comment:菜单类型(0 目录 1 菜单 2 按钮)" json:"menu_type"`
+	MenuIcon string `gorm:"comment:菜单的ICON;" json:"menu_icon"`
 	MenuPath string `gorm:"comment:菜单路由地址" json:"menu_path" binding:"required"`
 	MenuFilePath string `gorm:"comment:菜单对应的前端文件模板路径" json:"menu_file_path" binding:"required" requiredMsg:"模板路径不能为空"`
+	IsSingle *int `gorm:"default:0;comment:果是多级菜单且只存在一个节点，想在菜单上只展示一级节点，可以使用该配置。请注意该配置需配置在父节点" json:"is_single"`
 	IsVisible *int `gorm:"default:1;comment:是否可见(0 隐藏 1 显示)" json:"is_visible"`
 	IsEnabled *int `gorm:"default:1;comment:是否启用(0 关闭 1 启用)" json:"is_enabled"`
 	IsRefresh *int `gorm:"default:0;comment:打开页面时是否刷新页面(0 否 1 是)" json:"is_refresh"`

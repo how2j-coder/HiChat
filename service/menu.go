@@ -70,6 +70,8 @@ func UpdateMenu(ctx *gin.Context) {
 		MenuCode string `json:"menu_code" has_required:"菜单Code不能为空"`
 		MenuPath string `json:"menu_path" has_required:"菜单路由地址不能为空"`
 		MenuFilePath string `json:"menu_file_path" has_required:"模板路径不能为空"`
+		MenuIcon string `json:"menu_icon"`
+		IsSingle *int `json:"is_single"`
 		IsVisible *int  `json:"is_visible"`
 		IsEnabled *int `json:"is_enabled"`
 		IsRefresh *int `json:"is_refresh"`
@@ -144,7 +146,12 @@ func GetParentToMenuList(ctx *gin.Context)  {
 
 // GetMenuList 获取菜单列表
 func GetMenuList(ctx *gin.Context)  {
-	menus, err := dao.FindMenus()
+	platformId := ctx.DefaultQuery("platform_id", "")
+	if platformId == ""{
+		platformList, _ := dao.FindPlatformList(1)
+		platformId = platformList[0].ID
+	}
+	menus, err := dao.FindPlatformToMenus(platformId)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, ParamsNilError.WithMsg(err.Error()))
 		global.Logger.Error(err.Error())

@@ -63,7 +63,7 @@ func UpdateMenuIdToMenu(menuId string, data map[string]interface{}) (*models.Men
 	tx := global.DB.Model(&menu).Select(
 		"PlatformID", "ParentMenuID", "MenuName",
 	"MenuCode", "MenuType", "MenuFilePath", "IsVisible",
-	"IsEnabled", "IsRefresh", "SortOrder",
+	"IsEnabled", "IsRefresh", "SortOrder", "MenuIcon", "IsSingle",
 		).Updates(data)
 	if tx.Error != nil {
 		global.Logger.Error(tx.Error.Error())
