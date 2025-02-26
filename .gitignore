@@ -20,20 +20,4 @@
 
 # Go workspace file
 go.work
-
-DirectoryV3.xml
-vendor
-
-.idea
-.vscode
-
-cache
-pkg
-tmp/
-package.json
-node_modules
-node_modules/*
-api_doc
-api_doc/*
-
-
+.idea/
