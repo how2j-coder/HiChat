@@ -1,12 +1,14 @@
-package chat
+package main
 
 import (
+	"com/chat/service/cmd/chat/initial"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"os"
 )
 
 func main() {
+	initial.InitApp()
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{

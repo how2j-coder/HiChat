@@ -1,0 +1,121 @@
+{"level":"how2j.info","ts":"2024-12-30 18:05:34","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 18:05:39","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 18:46:54","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 18:46:54","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.error","ts":"2024-12-30 18:48:10","caller":"dao/platform.go:66","msg":"Error 1054 (42S22): Unknown column 'platformName' in 'field list'"}
+{"level":"how2j.info","ts":"2024-12-30 18:49:12","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 18:49:12","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.error","ts":"2024-12-30 18:49:13","caller":"dao/platform.go:66","msg":"Error 1054 (42S22): Unknown column 'platformName' in 'field list'"}
+{"level":"how2j.info","ts":"2024-12-30 19:12:24","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:12:24","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:13:39","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:13:39","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:13:55","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:13:55","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:15:26","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:15:26","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.error","ts":"2024-12-30 19:28:15","caller":"dao/platform.go:66","msg":"Error 1054 (42S22): Unknown column 'platformName' in 'field list'"}
+{"level":"how2j.info","ts":"2024-12-30 19:29:24","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:29:24","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:30:34","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:30:34","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:35:30","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:35:30","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:36:22","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:36:22","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:36:46","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:36:46","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:56:19","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:56:19","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:59:24","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 19:59:24","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:00:56","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:00:56","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:01:20","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:01:20","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:02:06","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:02:06","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:07:05","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:07:05","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:08:37","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:08:37","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:11:17","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:11:17","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:12:28","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:12:28","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:36:28","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:36:28","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:42:08","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:42:08","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:43:40","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:43:40","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:46:53","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:46:53","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:47:34","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:47:34","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:52:02","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2024-12-30 20:52:02","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:00:38","caller":"initialize/db.go:64","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:00:38","caller":"initialize/db.go:86","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:03:54","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.error","ts":"2025-01-08 23:03:54","caller":"initialize/db.go:84","msg":"Failed to connect to Redis:dial tcp: lookup 127.0.0.01: no such host"}
+{"level":"how2j.info","ts":"2025-01-08 23:04:24","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:04:24","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.error","ts":"2025-01-08 23:27:27","caller":"dao/menu.go:26","msg":"Error 1054 (42S22): Unknown column 'menu_path' in 'field list'"}
+{"level":"how2j.error","ts":"2025-01-08 23:27:27","caller":"service/menu.go:57","msg":"Error 1054 (42S22): Unknown column 'menu_path' in 'field list'"}
+{"level":"how2j.info","ts":"2025-01-08 23:36:24","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:36:24","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:50:12","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:50:12","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:53:45","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-08 23:53:45","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:08:01","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:08:01","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:13:19","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:13:19","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:17:14","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:17:14","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:30:31","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:30:31","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:30:41","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:30:41","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:31:53","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:31:53","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:34:24","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:34:24","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:35:53","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 11:35:53","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 12:34:34","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 12:34:34","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 14:17:02","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 14:17:02","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:39:11","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:39:11","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:48","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:49","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:49","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:49","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:49","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.error","ts":"2025-01-10 19:39:49","caller":"service/platform.go:63","msg":"find platform list error","error":"Error 1054 (42S22): Unknown column 'platform_enable' in 'where clause'"}
+{"level":"how2j.info","ts":"2025-01-10 19:40:41","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:40:41","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:45:21","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:45:21","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:45:53","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:45:53","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:46:25","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:46:25","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:47:01","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:47:01","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:47:29","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 19:47:29","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:03:40","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:03:40","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:04:02","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:04:02","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:07:47","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 20:07:47","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 22:37:29","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 22:37:29","caller":"initialize/db.go:88","msg":"redis successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 23:01:42","caller":"initialize/db.go:66","msg":"mysql successfully initialized"}
+{"level":"how2j.info","ts":"2025-01-10 23:01:42","caller":"initialize/db.go:88","msg":"redis successfully initialized"}

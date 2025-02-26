@@ -1,13 +1,13 @@
 root = "."
 testdata_dir = "testdata"
-tmp_dir = "tmp"
+tmp_dir = "bin"
 
 [build]
   args_bin = []
-  bin = "bin\\main.exe"
+  bin = "bin\\main.exe -version v1.0"
   cmd = "go build -o ./bin/main.exe cmd/chat/main.go"
   delay = 1000
-  exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+  exclude_dir = ["assets", "tmp", "vendor", "testdata", "bin"]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
@@ -35,7 +35,7 @@ tmp_dir = "tmp"
   watcher = "cyan"
 
 [log]
-  main_only = false
+  main_only = true
   time = false
 
 [misc]
