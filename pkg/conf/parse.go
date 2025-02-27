@@ -10,7 +10,7 @@ import (
 )
 
 // Parse 将配置文件解析为 struct，包括 yaml、toml、json 等，如果 fs 不为空，则开启监听配置文件更改
-func Parse(configFile string, obj interface{}, reloads ...func()) error  {
+func Parse(configFile string, obj interface{}, reloads ...func()) error {
 	confFileAbs, err := filepath.Abs(configFile)
 	if err != nil {
 		return err
@@ -18,9 +18,9 @@ func Parse(configFile string, obj interface{}, reloads ...func()) error  {
 	filePathStr, filename := filepath.Split(confFileAbs)
 	ext := strings.TrimLeft(path.Ext(filename), ".")
 	filename = strings.ReplaceAll(filename, "."+ext, "") // excluding suffix names
-	viper.AddConfigPath(filePathStr) // path
-	viper.SetConfigName(filename)    // file name
-	viper.SetConfigType(ext)         // get the configuration type from the file name
+	viper.AddConfigPath(filePathStr)                     // path
+	viper.SetConfigName(filename)                        // file name
+	viper.SetConfigType(ext)                             // get the configuration type from the file name
 	err = viper.ReadInConfig()
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func Parse(configFile string, obj interface{}, reloads ...func()) error  {
 	return nil
 }
 
-// listening for profile updates
+// Listening for profile updates
 func watchConfig(obj interface{}, reloads ...func()) {
 	viper.WatchConfig()
 

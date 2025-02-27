@@ -13,12 +13,12 @@ http:
 database:
   driver: "mysql"
   mysql:
-    dsn: "root:123456@(192.168.3.37:3306)/account?parseTime=true&loc=Local&charset=utf8,utf8mb4"
+    dsn: "root:how2j.online@(localhost:3306)/hi_chat?parseTime=true&loc=Local&charset=utf8,utf8mb4"
     enableLog: true
 
 # redis settings
 redis:
-  dsn: "default:123456@192.168.3.37:6379/0"
+  dsn: "default:how2j.online@localhost:6379/0"
   dialTimeout: 10
   readTimeout: 2
   writeTimeout: 2

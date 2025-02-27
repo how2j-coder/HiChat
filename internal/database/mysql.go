@@ -1,12 +1,16 @@
 package database
 
 import (
+	"com/chat/service/internal/config"
 	"database/sql"
 	mysqlDriver "gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
-func InitMysql(dsn string)  (*gorm.DB, error ) {
+func InitMysql()  (*gorm.DB, error ) {
+	var dsn string
+	mysqlCfg := config.GetConfig().Database.Mysql
+	dsn = mysqlCfg.Dsn
 	sqlDB, _ := sql.Open("mysql", dsn)
 	db, err := gorm.Open(
 		mysqlDriver.New(mysqlDriver.Config{

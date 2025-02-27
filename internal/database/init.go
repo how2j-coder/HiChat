@@ -6,6 +6,7 @@ var (
 	db *gorm.DB
 )
 
+// InitDB connect database
 func InitDB()  {
-	db = InitMysql()
+	_, _ = InitMysql()
 }
