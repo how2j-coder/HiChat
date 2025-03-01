@@ -2,7 +2,6 @@ package main
 
 import (
 	"com/chat/service/cmd/chat/initial"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"os"
 )
@@ -17,8 +16,6 @@ func main() {
 	})
 	err := r.Run(":8077")
 	if err != nil {
-		fmt.Println("1231312")
-		fmt.Println(err)
 		os.Exit(1)
 	}
 }

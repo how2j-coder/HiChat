@@ -5,11 +5,13 @@ import (
 	"context"
 	"github.com/redis/go-redis/v9"
 	"strings"
+	"sync"
 	"time"
 )
 
 var (
 	redisClient *redis.Client
+	redisCliOnce sync.Once
 )
 
 func InitCache() {
@@ -58,4 +60,13 @@ func InitRedis() {
 	if err != nil {
 		panic("redis.Init error: " + err.Error())
 	}
+}
+
+func GetRedisClient() *redis.Client {
+	if redisClient == nil {
+		redisCliOnce.Do(func() {
+			InitRedis()
+		})
+	}
+	return redisClient
 }

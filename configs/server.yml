@@ -22,3 +22,15 @@ redis:
   dialTimeout: 10
   readTimeout: 2
   writeTimeout: 2
+
+# logger settings
+logger:
+  level: "info" # output log levels debug, info, warn, error, default is debug
+  format: "console" # output format, console or json, default is console
+  isSave: false # false:output to terminal, true:output to file, default is false
+  logFileConfig: # Effective when isSave=true
+    filename: "out.log"
+    maxSize: 20 # Maximum file size (MB, default is 10MB)
+    maxBackups: 50 # Maximum amount old files to retain (default is 100)
+    maxAge: 15 # Maximum amount days to retain old files (default is 30 days)
+    isCompression: true # Whether to compress/archive old files (default is false)

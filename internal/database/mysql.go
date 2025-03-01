@@ -7,7 +7,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InitMysql()  (*gorm.DB, error ) {
+func InitMysql()  *gorm.DB {
 	var dsn string
 	mysqlCfg := config.GetConfig().Database.Mysql
 	dsn = mysqlCfg.Dsn
@@ -18,8 +18,9 @@ func InitMysql()  (*gorm.DB, error ) {
 		}),
 		)
 	if err != nil {
-		return nil, err
+		panic("init mysql error: " + err.Error())
+		return nil
 	}
 	db.Set("gorm:table_options", "CHARSET=utf8mb4")
-	return db, nil
+	return db
 }
