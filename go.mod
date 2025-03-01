@@ -9,6 +9,7 @@ require (
 	github.com/redis/go-redis/v9 v9.7.1
 	github.com/spf13/viper v1.19.0
 	go.uber.org/zap v1.24.0
+	golang.org/x/sync v0.6.0
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/gorm v1.25.12
 )
