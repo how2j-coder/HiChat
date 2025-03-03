@@ -12,7 +12,7 @@ func InitMysql()  *gorm.DB {
 	mysqlCfg := config.GetConfig().Database.Mysql
 	dsn = mysqlCfg.Dsn
 	sqlDB, _ := sql.Open("mysql", dsn)
-	db, err := gorm.Open(
+	mdb, err := gorm.Open(
 		mysqlDriver.New(mysqlDriver.Config{
 			Conn: sqlDB,
 		}),
@@ -21,6 +21,6 @@ func InitMysql()  *gorm.DB {
 		panic("init mysql error: " + err.Error())
 		return nil
 	}
-	db.Set("gorm:table_options", "CHARSET=utf8mb4")
-	return db
+	mdb.Set("gorm:table_options", "CHARSET=utf8mb4")
+	return mdb
 }

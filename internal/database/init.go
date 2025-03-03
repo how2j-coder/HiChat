@@ -24,3 +24,8 @@ func GetDB() *gorm.DB {
 
 	return db
 }
+
+// CloseMysql close db
+func CloseMysql() error {
+	return DbClose(db)
+}

@@ -2,20 +2,14 @@ package main
 
 import (
 	"com/chat/service/cmd/chat/initial"
-	"github.com/gin-gonic/gin"
-	"os"
+	"com/chat/service/pkg/app"
 )
 
 func main() {
 	initial.InitApp()
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	err := r.Run(":8077")
-	if err != nil {
-		os.Exit(1)
-	}
+
+	servers := initial.CreateService()
+	shutdowns := initial.Shutdown(servers)
+	a := app.New(servers, shutdowns)
+	a.Run()
 }

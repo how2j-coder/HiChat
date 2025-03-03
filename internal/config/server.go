@@ -22,6 +22,7 @@ func Show(hiddenFields ...string) string {
 
 type Config struct {
 	App   App `yaml:"app" json:"app"`
+	HTTP       HTTP         `yaml:"http" json:"http"`
 	Database Database `yaml:"database" json:"database"`
 	Redis 	Redis   `yaml:"redis" json:"redis"`
 	Logger Logger `yaml:"logger" json:"logger"`
@@ -31,6 +32,7 @@ type App struct {
 	Host string `yaml:"host" json:"host"`
 	Env string `yaml:"env" json:"env"`
 	Name string `yaml:"name" json:"name"`
+	CacheType string `yaml:"cache_type" json:"cache_type"`
 }
 
 type Mysql struct {
@@ -64,3 +66,7 @@ type LogFileConfig struct {
 	IsCompression bool   `yaml:"isCompression" json:"isCompression"`
 }
 
+type HTTP struct {
+	Port    int `yaml:"port" json:"port"`
+	Timeout int `yaml:"timeout" json:"timeout"`
+}

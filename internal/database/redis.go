@@ -70,3 +70,8 @@ func GetRedisClient() *redis.Client {
 	}
 	return redisClient
 }
+
+// CloseRedis close redis
+func CloseRedis() error {
+	return DbClose(redisClient)
+}

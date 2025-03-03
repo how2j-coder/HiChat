@@ -1,6 +1,9 @@
 package logger
 
-import "go.uber.org/zap/zapcore"
+import (
+	"go.uber.org/zap/zapcore"
+	"strings"
+)
 
 // Field type
 type Field = zapcore.Field
@@ -33,4 +36,14 @@ func Panic(msg string, fields ...Field) {
 // InfoPf format level information
 func InfoPf(format string, a ...interface{}) {
 	getSugaredLogger().Infof(format, a...)
+}
+
+// Sync flushing any buffered log entries, applications should take care to call Sync before exiting.
+func Sync() error {
+	_ = getSugaredLogger().Sync()
+	err := getLogger().Sync()
+	if err != nil && !strings.Contains(err.Error(), "/dev/stdout") {
+		return err
+	}
+	return nil
 }
