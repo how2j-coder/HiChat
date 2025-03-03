@@ -4,12 +4,12 @@ import "com/chat/service/pkg/conf"
 
 var config *Config
 
-func Init(configFile string, fs ...func()) error  {
+func Init(configFile string, fs ...func()) error {
 	config = &Config{}
 	return conf.Parse(configFile, config, fs...)
 }
 
-func GetConfig() *Config  {
+func GetConfig() *Config {
 	if config == nil {
 		panic("config is nil, please call config.Init() first")
 	}
@@ -21,18 +21,17 @@ func Show(hiddenFields ...string) string {
 }
 
 type Config struct {
-	App   App `yaml:"app" json:"app"`
-	HTTP       HTTP         `yaml:"http" json:"http"`
+	App      App      `yaml:"app" json:"app"`
+	HTTP     HTTP     `yaml:"http" json:"http"`
 	Database Database `yaml:"database" json:"database"`
-	Redis 	Redis   `yaml:"redis" json:"redis"`
-	Logger Logger `yaml:"logger" json:"logger"`
-
+	Redis    Redis    `yaml:"redis" json:"redis"`
+	Logger   Logger   `yaml:"logger" json:"logger"`
 }
 
 type App struct {
-	Host string `yaml:"host" json:"host"`
-	Env string `yaml:"env" json:"env"`
-	Name string `yaml:"name" json:"name"`
+	Host      string `yaml:"host" json:"host"`
+	Env       string `yaml:"env" json:"env"`
+	Name      string `yaml:"name" json:"name"`
 	CacheType string `yaml:"cache_type" json:"cache_type"`
 }
 
@@ -54,21 +53,21 @@ type Redis struct {
 }
 
 type Database struct {
-	Driver     string  `yaml:"driver" json:"driver"`
-	Mysql      Mysql   `yaml:"mysql" json:"mysql"`
+	Driver string `yaml:"driver" json:"driver"`
+	Mysql  Mysql  `yaml:"mysql" json:"mysql"`
 }
 type Logger struct {
-	Level string `yaml:"level" json:"level"`
-	Format string `yaml:"format" json:"format"`
-	IsSave bool   `yaml:"isSave" json:"isSave"`
+	Level         string        `yaml:"level" json:"level"`
+	Format        string        `yaml:"format" json:"format"`
+	IsSave        bool          `yaml:"isSave" json:"isSave"`
 	LogFileConfig LogFileConfig `yaml:"logFileConfig" json:"logFileConfig"`
 }
 
 type LogFileConfig struct {
-	Filename   string `yaml:"filename" json:"filename"`
-	MaxSize    int    `yaml:"maxSize" json:"maxSize"`
-	MaxBackups int    `yaml:"maxBackups" json:"maxBackups"`
-	MaxAge     int    `yaml:"maxAge" json:"maxAge"`
+	Filename      string `yaml:"filename" json:"filename"`
+	MaxSize       int    `yaml:"maxSize" json:"maxSize"`
+	MaxBackups    int    `yaml:"maxBackups" json:"maxBackups"`
+	MaxAge        int    `yaml:"maxAge" json:"maxAge"`
 	IsCompression bool   `yaml:"isCompression" json:"isCompression"`
 }
 

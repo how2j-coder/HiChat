@@ -125,7 +125,6 @@ func getLevelSize(levelName string) zapcore.Level {
 	return zapcore.DebugLevel
 }
 
-
 func getLogger() *zap.Logger {
 	checkNil()
 	return defaultLogger.WithOptions(zap.AddCallerSkip(1))

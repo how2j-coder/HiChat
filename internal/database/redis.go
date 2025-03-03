@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	redisClient *redis.Client
+	redisClient  *redis.Client
 	redisCliOnce sync.Once
 )
 

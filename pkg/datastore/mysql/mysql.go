@@ -12,7 +12,7 @@ import (
 	"os"
 )
 
-func Init(dsn string, opts ...Option) (*gorm.DB, error)  {
+func Init(dsn string, opts ...Option) (*gorm.DB, error) {
 	o := defaultOptions()
 	o.apply(opts...)
 

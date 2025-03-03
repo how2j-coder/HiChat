@@ -20,11 +20,11 @@ var (
 
 // ----------------- console -----------------
 type options struct {
-	level    string
-	encoding string
-	isSave   bool
+	level      string
+	encoding   string
+	isSave     bool
 	fileConfig *fileOptions
-	hooks []func(zapcore.Entry) error
+	hooks      []func(zapcore.Entry) error
 }
 
 func defaultOptions() *options {
@@ -37,6 +37,7 @@ func defaultOptions() *options {
 
 // Option set the logger options.
 type Option func(*options)
+
 func (o *options) apply(opts ...Option) {
 	for _, opt := range opts {
 		opt(o)

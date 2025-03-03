@@ -3,7 +3,6 @@ package redis
 import (
 	"crypto/tls"
 	"github.com/redis/go-redis/v9"
-	"go.opentelemetry.io/otel/sdk/trace"
 	"time"
 )
 

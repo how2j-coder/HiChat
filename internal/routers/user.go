@@ -5,19 +5,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func init()  {
+func init() {
 	apiV1RouterFns = append(apiV1RouterFns, func(rGroup *gin.RouterGroup) {
 		userRouter(rGroup, handler.NewUserHandler())
 	})
 }
 
-func userRouter(group *gin.RouterGroup, h handler.UserHandler)  {
-		group.GET("/login", func(context *gin.Context) {
-			context.JSON(200, gin.H{
-				"code": 200,
-				"msg": "success",
-				"data": nil,
-			})
+func userRouter(group *gin.RouterGroup, h handler.UserHandler) {
+	group.GET("/login", func(context *gin.Context) {
+		context.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "success",
+			"data": nil,
 		})
+	})
 }
-

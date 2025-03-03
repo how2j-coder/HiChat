@@ -57,7 +57,6 @@ func watchConfig(obj interface{}, reloads ...func()) {
 	})
 }
 
-
 // Show 打印配置信息（隐藏敏感字段）
 func Show(obj interface{}, fields ...string) string {
 	var out string

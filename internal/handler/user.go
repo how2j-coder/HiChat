@@ -11,13 +11,12 @@ type UserHandler interface {
 }
 
 type userHandler struct {
-
 }
 
 func NewUserHandler() UserHandler {
 	return &userHandler{}
 }
 
-func (u *userHandler) Create(c *gin.Context) {}
-func (u *userHandler) List(c *gin.Context) {}
+func (u *userHandler) Create(c *gin.Context)  {}
+func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}

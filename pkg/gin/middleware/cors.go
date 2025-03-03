@@ -18,4 +18,3 @@ func Cors() gin.HandlerFunc {
 		},
 	)
 }
-

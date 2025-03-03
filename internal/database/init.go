@@ -6,12 +6,12 @@ import (
 )
 
 var (
-	db *gorm.DB
+	db     *gorm.DB
 	dbOnce sync.Once
 )
 
 // InitDB connect database
-func InitDB()  {
+func InitDB() {
 	db = InitMysql()
 }
 

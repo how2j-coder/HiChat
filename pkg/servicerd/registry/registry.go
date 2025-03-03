@@ -33,7 +33,6 @@ func NewServiceInstance(id string, name string, endpoints []string, opts ...Opti
 	}
 }
 
-
 // Registry is service registrar.
 type Registry interface {
 	// Register the registration.

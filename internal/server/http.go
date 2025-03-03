@@ -13,8 +13,8 @@ import (
 )
 
 type httpServer struct {
-	addr   string
-	server *http.Server
+	addr      string
+	server    *http.Server
 	instance  *registry.ServiceInstance
 	iRegistry registry.Registry
 }

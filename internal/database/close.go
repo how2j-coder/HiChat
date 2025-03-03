@@ -67,4 +67,3 @@ func checkInUse(sqlDB *sql.DB, duration time.Duration) {
 		}
 	}
 }
-

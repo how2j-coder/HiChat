@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func InitMysql()  *gorm.DB {
+func InitMysql() *gorm.DB {
 	mysqlCfg := config.GetConfig().Database.Mysql
 	opts := []mysql.Option{
 		mysql.WithMaxIdleConns(mysqlCfg.MaxIdleConns),

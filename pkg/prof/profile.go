@@ -314,11 +314,11 @@ func joinPath(elem ...string) string {
 	return dir
 }
 
-
 // EnableTrace enable sampling trace profile
 func EnableTrace() {
 	isSamplingTrace = true
 }
+
 // SetDurationSecond set sampling profile duration
 func SetDurationSecond(d uint32) {
 	atomic.StoreUint32(&durationSecond, d)

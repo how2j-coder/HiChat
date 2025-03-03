@@ -2,7 +2,6 @@ package redis
 
 import (
 	"context"
-	"github.com/redis/go-redis/extra/redisotel/v9"
 	"github.com/redis/go-redis/v9"
 	"strings"
 	"time"
@@ -17,7 +16,7 @@ type Client = redis.Client
 // (2) with a password and db: <user>:<pass>@localhost:6379/2
 // (3) redis://default:123456@localhost:6379/0?max_retries=3
 // for more parameters see the redis source code for the setupConnParams function.
-func Init(dsn string, opts ...Option)(*redis.Client, error)  {
+func Init(dsn string, opts ...Option) (*redis.Client, error) {
 	o := defaultOptions()
 	o.apply(opts...)
 
@@ -39,7 +38,6 @@ func Init(dsn string, opts ...Option)(*redis.Client, error)  {
 
 	return rdb, err
 }
-
 
 // InitSingle connecting to single redis instance
 func InitSingle(addr string, password string, db int, opts ...Option) (*redis.Client, error) {

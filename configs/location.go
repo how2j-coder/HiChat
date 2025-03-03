@@ -15,7 +15,7 @@ func init() {
 	fmt.Println("auto init")
 }
 
-func Path(rel string) string  {
+func Path(rel string) string {
 	if filepath.IsAbs(rel) {
 		return rel
 	}

@@ -29,7 +29,6 @@ type options struct {
 
 type Option func(*options)
 
-
 func (o *options) apply(opts ...Option) {
 	for _, opt := range opts {
 		opt(o)
@@ -46,7 +45,7 @@ func defaultOptions() *options {
 		maxOpenConns:    50,               // set the maximum amount open database connections
 		connMaxLifetime: 30 * time.Minute, // sets the maximum amount of time a connection can be reused.
 
-		disableForeignKey: true,  // disables [OMIT] foreign keys, true is recommended for production environments, enabled by default.
+		disableForeignKey: true, // disables [OMIT] foreign keys, true is recommended for production environments, enabled by default.
 
 		requestIDKey: "",          // request id key
 		gLog:         nil,         // custom logger

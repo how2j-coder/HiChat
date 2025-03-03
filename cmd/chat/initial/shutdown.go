@@ -28,7 +28,6 @@ func Shutdown(servers []app.GoServer) []app.Close {
 		})
 	}
 
-
 	// close logger
 	closes = append(closes, func() error {
 		return logger.Sync()
