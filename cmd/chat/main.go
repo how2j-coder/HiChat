@@ -7,7 +7,6 @@ import (
 
 func main() {
 	initial.InitApp()
-
 	servers := initial.CreateService()
 	shutdowns := initial.Shutdown(servers)
 	a := app.New(servers, shutdowns)

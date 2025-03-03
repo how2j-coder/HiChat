@@ -21,7 +21,6 @@ func GetDB() *gorm.DB {
 			InitDB()
 		})
 	}
-
 	return db
 }
 

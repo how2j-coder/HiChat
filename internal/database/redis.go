@@ -2,9 +2,8 @@ package database
 
 import (
 	"com/chat/service/internal/config"
-	"context"
+	storeRedis "com/chat/service/pkg/datastore/redis"
 	"github.com/redis/go-redis/v9"
-	"strings"
 	"sync"
 	"time"
 )
@@ -15,48 +14,19 @@ var (
 )
 
 func InitCache() {
-	InitRedis()
+	GetRedisClient()
 }
 
 func InitRedis() {
-	redisConfig := config.GetConfig().Redis
-	dsn := redisConfig.Dsn
-	dsn = strings.ReplaceAll(dsn, " ", "")
-	if len(dsn) > 8 {
-		if !strings.Contains(dsn[len(dsn)-3:], "/") {
-			dsn += "/0" // use db 0 by default
-		}
-
-		if dsn[:8] != "redis://" && dsn[:9] != "redis://" {
-			dsn = "redis://" + dsn
-		}
+	redisCfg := config.GetConfig().Redis
+	opts := []storeRedis.Option{
+		storeRedis.WithDialTimeout(time.Duration(redisCfg.DialTimeout) * time.Second),
+		storeRedis.WithReadTimeout(time.Duration(redisCfg.ReadTimeout) * time.Second),
+		storeRedis.WithWriteTimeout(time.Duration(redisCfg.WriteTimeout) * time.Second),
 	}
 
-	opts, err := redis.ParseURL(dsn)
-
-	if err != nil {
-		panic("redis.Init error: " + err.Error())
-	}
-
-	if redisConfig.DialTimeout > 0 {
-		opts.DialTimeout = time.Duration(redisConfig.DialTimeout) * time.Second
-	}
-	if redisConfig.ReadTimeout > 0 {
-		opts.ReadTimeout = time.Duration(redisConfig.ReadTimeout) * time.Second
-	}
-	if redisConfig.WriteTimeout > 0 {
-		opts.WriteTimeout = time.Duration(redisConfig.WriteTimeout) * time.Second
-	}
-
-	rdb := redis.NewClient(opts)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
-
-	defer cancel()
-	err = rdb.Ping(ctx).Err()
-
-	redisClient = rdb
-
+	var err error
+	redisClient, err = storeRedis.Init(redisCfg.Dsn, opts...)
 	if err != nil {
 		panic("redis.Init error: " + err.Error())
 	}

@@ -56,6 +56,7 @@ func (s *httpServer) String() string {
 	return "http service address " + s.addr
 }
 
+// NewHTTPServer 创建HTTP服务
 func NewHTTPServer(addr string, opts ...HTTPOption) app.GoServer {
 	o := defaultHTTPOptions()
 	o.apply(opts...)

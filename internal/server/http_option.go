@@ -6,11 +6,12 @@ import "com/chat/service/pkg/servicerd/registry"
 type HTTPOption func(*httpOptions)
 
 type httpOptions struct {
-	isProd    bool
-	instance  *registry.ServiceInstance
-	iRegistry registry.Registry
+	isProd    bool  // 是否为开发环境
+	instance  *registry.ServiceInstance  // 服务实例
+	iRegistry registry.Registry // 是否注册
 }
 
+// 服务的基本数据
 func defaultHTTPOptions() *httpOptions {
 	return &httpOptions{
 		isProd:    false,

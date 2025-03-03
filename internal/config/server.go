@@ -26,6 +26,7 @@ type Config struct {
 	Database Database `yaml:"database" json:"database"`
 	Redis 	Redis   `yaml:"redis" json:"redis"`
 	Logger Logger `yaml:"logger" json:"logger"`
+
 }
 
 type App struct {
@@ -36,8 +37,13 @@ type App struct {
 }
 
 type Mysql struct {
+	ConnMaxLifetime int      `yaml:"connMaxLifetime" json:"connMaxLifetime"`
 	Dsn             string   `yaml:"dsn" json:"dsn"`
 	EnableLog       bool     `yaml:"enableLog" json:"enableLog"`
+	MastersDsn      []string `yaml:"mastersDsn" json:"mastersDsn"`
+	MaxIdleConns    int      `yaml:"maxIdleConns" json:"maxIdleConns"`
+	MaxOpenConns    int      `yaml:"maxOpenConns" json:"maxOpenConns"`
+	SlavesDsn       []string `yaml:"slavesDsn" json:"slavesDsn"`
 }
 
 type Redis struct {

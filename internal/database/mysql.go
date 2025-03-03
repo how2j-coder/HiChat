@@ -2,25 +2,32 @@ package database
 
 import (
 	"com/chat/service/internal/config"
-	"database/sql"
-	mysqlDriver "gorm.io/driver/mysql"
+	"com/chat/service/pkg/datastore/mysql"
+	"com/chat/service/pkg/logger"
+	"com/chat/service/pkg/utils"
 	"gorm.io/gorm"
+	"time"
 )
 
 func InitMysql()  *gorm.DB {
-	var dsn string
 	mysqlCfg := config.GetConfig().Database.Mysql
-	dsn = mysqlCfg.Dsn
-	sqlDB, _ := sql.Open("mysql", dsn)
-	mdb, err := gorm.Open(
-		mysqlDriver.New(mysqlDriver.Config{
-			Conn: sqlDB,
-		}),
+	opts := []mysql.Option{
+		mysql.WithMaxIdleConns(mysqlCfg.MaxIdleConns),
+		mysql.WithMaxOpenConns(mysqlCfg.MaxOpenConns),
+		mysql.WithConnMaxLifetime(time.Duration(mysqlCfg.ConnMaxLifetime) * time.Minute),
+	}
+
+	if mysqlCfg.EnableLog {
+		opts = append(opts,
+			mysql.WithLogging(logger.Get()),
+			mysql.WithLogRequestIDKey("request_id"),
 		)
+	}
+
+	dsn := utils.AdaptiveMysqlDsn(mysqlCfg.Dsn)
+	db, err := mysql.Init(dsn, opts...)
 	if err != nil {
 		panic("init mysql error: " + err.Error())
-		return nil
 	}
-	mdb.Set("gorm:table_options", "CHARSET=utf8mb4")
-	return mdb
+	return db
 }

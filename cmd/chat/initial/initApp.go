@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	version string
+	version    string
 	configFile string
 )
 
@@ -20,7 +20,7 @@ func InitApp() {
 	_, err := logger.Init(
 		logger.WithLevel(cfg.Logger.Level),
 		logger.WithFormat(cfg.Logger.Format),
-		)
+	)
 
 	if err != nil {
 		panic(err)
@@ -37,7 +37,7 @@ func InitApp() {
 }
 
 // 初始化配置
-func initConfig()  {
+func initConfig() {
 	flag.StringVar(&version, "version", "", "service Version Number")
 	flag.StringVar(&configFile, "c", "", "configuration file")
 	flag.Parse()
@@ -45,7 +45,7 @@ func initConfig()  {
 	getConfigFormLocal()
 }
 
-func getConfigFormLocal()  {
+func getConfigFormLocal() {
 	if configFile == "" {
 		// 配置文件
 		configFile = configs.Path("server.yml")
