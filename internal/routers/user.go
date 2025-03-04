@@ -12,11 +12,5 @@ func init() {
 }
 
 func userRouter(group *gin.RouterGroup, h handler.UserHandler) {
-	group.GET("/login", func(context *gin.Context) {
-		context.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "success",
-			"data": nil,
-		})
-	})
+	group.POST("/user", h.Create)
 }

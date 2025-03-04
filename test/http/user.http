@@ -1,0 +1,12 @@
+### POST creat user
+// @no-log
+POST http://localhost:8077/api/v1/user
+Content-Type: application/json
+
+{
+  "username": "root",
+  "password": "how2j.online",
+  "email": "how2jCoder@linux.do"
+}
+
+###

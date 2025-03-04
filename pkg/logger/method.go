@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"strings"
 )
@@ -46,4 +47,14 @@ func Sync() error {
 		return err
 	}
 	return nil
+}
+
+// Err type
+func Err(err error) Field {
+	return zap.Error(err)
+}
+
+// Any type, if it is a composite type such as object, slice, map, etc., use Any
+func Any(key string, val interface{}) Field {
+	return zap.Any(key, val)
 }

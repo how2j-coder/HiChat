@@ -1,7 +1,16 @@
 package model
 
-type User struct{}
+import "com/chat/service/pkg/datastore/mysql"
+
+type User struct{
+	mysql.BaseModel `gorm:"embedded"`
+	Name string `gorm:"type:varchar(255);unique;not null"`
+	PasswordHash string `gorm:"type:varchar(255)"`
+	Email       string `gorm:"type:varchar(100);uniqueIndex"`
+	AvatarURL   string `gorm:"type:varchar(255)"`
+	Gender      string `gorm:"type:varchar(10);check:gender IN ('Male', 'Female', 'Other');default:'Other'"`
+}
 
 func (u *User) TableName() string {
-	return "user"
+	return "users"
 }
