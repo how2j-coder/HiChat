@@ -8,6 +8,7 @@ import (
 	"com/chat/service/internal/types"
 	"com/chat/service/pkg/gin/middleware"
 	"com/chat/service/pkg/gin/response"
+	"com/chat/service/pkg/gocrypto"
 	"com/chat/service/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -17,6 +18,7 @@ var _ UserHandler = (*userHandler)(nil)
 
 type UserHandler interface {
 	Create(c *gin.Context)
+	UpdateByID(c *gin.Context)
 	List(c *gin.Context)
 	GetByID(c *gin.Context)
 }
@@ -40,6 +42,8 @@ func (u *userHandler) Create(c *gin.Context)  {
 		return
 	}
 
+	form.Password, _ = gocrypto.HashAndSaltPassword(form.Password)
+
 	user := &model.User{}
 	err = copier.Copy(user, form)
 	if err != nil {
@@ -56,6 +60,9 @@ func (u *userHandler) Create(c *gin.Context)  {
 	}
 
 	response.Success(c, gin.H{"id": user.ID})
+}
+func (u *userHandler) UpdateByID(c *gin.Context)    {
+
 }
 func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}

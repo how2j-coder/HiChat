@@ -8,6 +8,7 @@ import (
 
 type UserDao interface {
 	Create(ctx context.Context, table *model.User) error
+	UpdateByID(ctx context.Context, table *model.User) error
 }
 
 type userDao struct {
@@ -28,3 +29,11 @@ func (d *userDao) Create(ctx context.Context, table *model.User) error {
 	err := d.db.WithContext(ctx).Create(table).Error
 	return err
 }
+
+// UpdateByID the ID
+func (d *userDao) UpdateByID(ctx context.Context, table *model.User) error {
+	err := d.db.WithContext(ctx).Model(table).Updates(table).Error
+	return err
+}
+
+
