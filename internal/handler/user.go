@@ -13,9 +13,7 @@ import (
 	"com/chat/service/pkg/logger"
 	"com/chat/service/pkg/srand"
 	"com/chat/service/pkg/utils"
-	"encoding/json"
 	"errors"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"golang.org/x/exp/slices"
@@ -143,7 +141,8 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 	}
 
 	form := &types.UpdateUserReq{}
-	err := c.ShouldBindJSON(form)
+
+	err := c.ShouldBindBodyWithJSON(form)
 	if err != nil {
 		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
 		response.Error(c, ecode.InvalidParams)
@@ -151,10 +150,13 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 	}
 	form.ID = id
 
-	t := utils.GetNonEmptyFields(*form)
-	s,_ := json.MarshalIndent(t, "", " ")
-	fmt.Println(string(s))
-	response.Success(c, id)
+	reqAllData := map[string]interface{}{}
+	_ = c.ShouldBindBodyWithJSON(&reqAllData)
+
+
+
+	t := utils.GetNonEmptyFields(reqAllData, form)
+	response.Success(c, t)
 }
 func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}

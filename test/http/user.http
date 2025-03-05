@@ -39,6 +39,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "username": ""
+  "username": "",
+  "chear": "12312"
 }
 

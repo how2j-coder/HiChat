@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+	"golang.org/x/exp/slices"
 	"reflect"
 	"strconv"
 )
@@ -123,12 +125,17 @@ func Uint64ToProtoInt64(v uint64) int64 {
 	return int64(v)
 }
 
+
+type EmptyMap map[string]interface{}
 // GetNonEmptyFields 获取结构体中非空的字段
-// GetNonEmptyFields 获取结构体中非空的字段
-func GetNonEmptyFields(src interface{}) map[string]interface{} {
-	fields := make(map[string]interface{})
-	val := reflect.ValueOf(src)
-	typ := reflect.TypeOf(src)
+func GetNonEmptyFields(target map[string]interface{}, source interface{}) EmptyMap {
+	fields := EmptyMap{}
+	var keys []string
+	for k := range target {
+		keys = append(keys, k)
+	}
+	val := reflect.ValueOf(source)
+	typ := reflect.TypeOf(source)
 
 	// 如果传入的是指针，则获取其指向的值
 	if val.Kind() == reflect.Ptr {
@@ -138,20 +145,12 @@ func GetNonEmptyFields(src interface{}) map[string]interface{} {
 
 	// 遍历结构体字段
 	for i := 0; i < val.NumField(); i++ {
-		field := val.Field(i)
 		fieldName := typ.Field(i).Tag.Get("json")
-
-		// 如果字段是结构体，递归处理
-		if field.Kind() == reflect.Struct {
-			nestedFields := GetNonEmptyFields(field.Interface())
-			if len(nestedFields) > 0 {
-				fields[fieldName] = nestedFields
-			}
-		} else if !field.IsZero() {
-			// 如果字段非空，则添加到结果中
-			fields[fieldName] = field.Interface()
+		if slices.Contains(keys, fieldName) {
+			fields[fieldName] = target[fieldName]
 		}
 	}
 
+	fmt.Println(fields)
 	return fields
 }
