@@ -5,7 +5,10 @@ import (
 	"com/chat/service/pkg/gin/response"
 	"com/chat/service/pkg/jwt"
 	"com/chat/service/pkg/logger"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"net/url"
+	"strings"
 )
 
 const (
@@ -33,6 +36,19 @@ type authOptions struct {
 
 // AuthOption set the auth options.
 type AuthOption func(*authOptions)
+
+
+var whiteList map[string]string
+func ignoreWhiteList(url *url.URL, method string) bool {
+	queryUrl := strings.Split(fmt.Sprint(url), "?")[0]
+	if _, ok := whiteList[queryUrl]; ok {
+		if whiteList[queryUrl] == method {
+			return true
+		}
+		return false
+	}
+	return false
+}
 
 
 func defaultAuthOptions() *authOptions {
@@ -75,6 +91,21 @@ func WithCustomVerify(fn ...ExtraCustomVerifyFn) AuthOption {
 	}
 }
 
+// AddWhiteRouter add white route
+func AddWhiteRouter(route map[string]string) AuthOption {
+	return func(_ *authOptions) {
+		// 如果 whiteList 还未初始化，则初始化
+		if whiteList == nil {
+			whiteList = make(map[string]string)
+		}
+
+		// 将传入的 route 中的键值对添加到 whiteList 中
+		for key, value := range route {
+			whiteList[key] = value
+		}
+	}
+}
+
 func responseUnauthorized(c *gin.Context, isSwitchHTTPCode bool) {
 	if isSwitchHTTPCode {
 		response.Out(c, errcode.Unauthorized)
@@ -91,6 +122,12 @@ func Auth(opts ...AuthOption) gin.HandlerFunc {
 	o.apply(opts...)
 
 	return func(c *gin.Context) {
+		// 忽略白名单路由
+		if ignoreWhiteList(c.Request.URL, c.Request.Method) {
+			c.Next()
+			return
+		}
+
 		authorization := c.GetHeader(HeaderAuthorizationKey)
 		if len(authorization) < 100 {
 			logger.Warn("authorization is illegal")
@@ -139,8 +176,8 @@ func Auth(opts ...AuthOption) gin.HandlerFunc {
 					return
 				}
 			} else {
-				c.Set("uid", claims.UID)
-				c.Set("name", claims.Name)
+					c.Set("uid", claims.UID)
+					c.Set("name", claims.Name)
 			}
 		}
 

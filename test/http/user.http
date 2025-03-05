@@ -1,11 +1,44 @@
 ### POST creat user
 // @no-log
-POST http://localhost:8077/api/v1/user
+POST http://localhost:8077/api/v1/user/create
 Content-Type: application/json
 
 {
-  "username": "root",
   "password": "how2j.online",
   "email": "how2jCoder@linux.do"
+}
+
+### POST email login
+// @no-log
+POST http://localhost:8077/api/v1/user/login?type=email
+Content-Type: application/json
+
+{
+  "password": "how2j.online",
+  "email": "how2jCoder@linux.do"
+}
+
+> {% client.global.set("auth_token", response.body.data); %}
+
+### POST account login
+// @no-log
+POST http://localhost:8077/api/v1/user/login?type=account
+Content-Type: application/json
+
+{
+  "password": "how2j.online",
+  "account": "HHvSOX"
+}
+
+> {% client.global.set("auth_token", response.body.data); %}
+
+### PUT update
+// @no-log
+PUT http://localhost:8077/api/v1/user/update/552066573972541440
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "username": ""
 }
 

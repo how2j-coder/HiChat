@@ -9,6 +9,8 @@ import (
 type UserDao interface {
 	Create(ctx context.Context, table *model.User) error
 	UpdateByID(ctx context.Context, table *model.User) error
+	FindByEmail(ctx context.Context, email string) (*model.User, error)
+	FindByAccount(ctx context.Context, email string) (*model.User, error)
 }
 
 type userDao struct {
@@ -34,6 +36,20 @@ func (d *userDao) Create(ctx context.Context, table *model.User) error {
 func (d *userDao) UpdateByID(ctx context.Context, table *model.User) error {
 	err := d.db.WithContext(ctx).Model(table).Updates(table).Error
 	return err
+}
+
+// FindByEmail 查找用户
+func (d *userDao) FindByEmail(ctx context.Context, email string) (*model.User, error) {
+	var user model.User
+	err := d.db.WithContext(ctx).First(&user, "email = ?", email).Error
+	return &user, err
+}
+
+// FindByAccount 查找用户
+func (d *userDao) FindByAccount(ctx context.Context, account string) (*model.User, error) {
+	var user model.User
+	err := d.db.WithContext(ctx).First(&user, "account = ?", account).Error
+	return &user, err
 }
 
 

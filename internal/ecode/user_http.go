@@ -12,6 +12,7 @@ var (
 	ErrUpdateByIDUser = errcode.NewError(userBaseCode+3, "failed to update "+userName)
 	ErrGetByIDUser    = errcode.NewError(userBaseCode+4, "failed to get "+userName+" details")
 	ErrListUser       = errcode.NewError(userBaseCode+5, "failed to list of "+userName)
+	ErrLoginUser       = errcode.NewError(userBaseCode+6, "failed to login of" + userName)
 
 	// error codes are globally unique, adding 1 to the previous error code
 )

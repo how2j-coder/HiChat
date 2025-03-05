@@ -58,3 +58,8 @@ func Err(err error) Field {
 func Any(key string, val interface{}) Field {
 	return zap.Any(key, val)
 }
+
+// String type
+func String(key string, val string) Field {
+	return zap.String(key, val)
+}
