@@ -8,7 +8,7 @@ import (
 
 type UserDao interface {
 	Create(ctx context.Context, table *model.User) error
-	UpdateByID(ctx context.Context, table *model.User) error
+	UpdateByID(ctx context.Context, table *model.User, update map[string]interface{}) error
 	FindByEmail(ctx context.Context, email string) (*model.User, error)
 	FindByAccount(ctx context.Context, email string) (*model.User, error)
 }
@@ -32,9 +32,9 @@ func (d *userDao) Create(ctx context.Context, table *model.User) error {
 	return err
 }
 
-// UpdateByID the ID
-func (d *userDao) UpdateByID(ctx context.Context, table *model.User) error {
-	err := d.db.WithContext(ctx).Model(table).Updates(table).Error
+// UpdateByID 更新数据
+func (d *userDao) UpdateByID(ctx context.Context, table *model.User, update map[string]interface{}) error {
+	err := d.db.WithContext(ctx).Model(table).Updates(update).Error
 	return err
 }
 

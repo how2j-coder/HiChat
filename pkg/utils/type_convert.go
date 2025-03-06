@@ -1,9 +1,6 @@
 package utils
 
 import (
-	"fmt"
-	"golang.org/x/exp/slices"
-	"reflect"
 	"strconv"
 )
 
@@ -123,34 +120,4 @@ func ProtoInt64ToUint64(v int64) uint64 {
 // Uint64ToProtoInt64 convert uint64 to proto int64
 func Uint64ToProtoInt64(v uint64) int64 {
 	return int64(v)
-}
-
-
-type EmptyMap map[string]interface{}
-// GetNonEmptyFields 获取结构体中非空的字段
-func GetNonEmptyFields(target map[string]interface{}, source interface{}) EmptyMap {
-	fields := EmptyMap{}
-	var keys []string
-	for k := range target {
-		keys = append(keys, k)
-	}
-	val := reflect.ValueOf(source)
-	typ := reflect.TypeOf(source)
-
-	// 如果传入的是指针，则获取其指向的值
-	if val.Kind() == reflect.Ptr {
-		val = val.Elem()
-		typ = typ.Elem()
-	}
-
-	// 遍历结构体字段
-	for i := 0; i < val.NumField(); i++ {
-		fieldName := typ.Field(i).Tag.Get("json")
-		if slices.Contains(keys, fieldName) {
-			fields[fieldName] = target[fieldName]
-		}
-	}
-
-	fmt.Println(fields)
-	return fields
 }

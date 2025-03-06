@@ -142,21 +142,35 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 
 	form := &types.UpdateUserReq{}
 
+	// 参数效验
 	err := c.ShouldBindBodyWithJSON(form)
 	if err != nil {
 		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
 		response.Error(c, ecode.InvalidParams)
 		return
 	}
-	form.ID = id
 
-	reqAllData := map[string]interface{}{}
-	_ = c.ShouldBindBodyWithJSON(&reqAllData)
+	// 获取需要更新的数据
+	update, err := getTransmitFields(c, form)
 
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InternalServerError)
+		return
+	}
 
+	user := &model.User{}
+	user.ID = id
 
-	t := utils.GetNonEmptyFields(reqAllData, form)
-	response.Success(c, t)
+	ctx := middleware.WrapCtx(c)
+	err = u.iDao.UpdateByID(ctx, user, update)
+
+	if err != nil {
+		logger.Error("UpdateByID error", logger.Err(err), logger.Any("form", form), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+	response.Success(c)
 }
 func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}
