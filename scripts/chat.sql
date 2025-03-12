@@ -58,4 +58,22 @@ CREATE TABLE `casbin_rule`
     `v3`    VARCHAR(256) NULL DEFAULT NULL,
     `v4`    VARCHAR(256) NULL DEFAULT NULL,
     `v5`    VARCHAR(256) NULL DEFAULT NULL
-)
+);
+
+CREATE TABLE `menu`
+(
+    `id`             BIGINT PRIMARY KEY,
+    `created_at`     TIMESTAMP             DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    `updated_at`     TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+    `deleted_at`     TIMESTAMP    NULL     DEFAULT NULL,
+    `parent_menu_id` BIGINT COMMENT '父级菜单ID',
+    `menu_code`      VARCHAR(20)  NOT NULL COMMENT '菜单唯一Code',
+    `menu_path`      VARCHAR(255) NOT NULL COMMENT '菜单对于地址',
+    `menu_source`    VARCHAR(255) NOT NULL COMMENT '菜单对应前端的文件页面地址',
+    `is_enable`      TINYINT      NOT NULL DEFAULT 1 COMMENT '菜单状态（1：启用，0：禁用）',
+    `type`           TINYINT      NOT NULL DEFAULT 1 COMMENT '菜单类型（1：菜单，2：按钮，3：其他）',
+    `is_refresh`     TINYINT      NOT NULL DEFAULT 1 COMMENT '页面刷新（1：刷新，0：不刷新）',
+    `is_visible`     TINYINT               DEFAULT 1 COMMENT '是否可见(0 隐藏 1 显示)',
+    UNIQUE KEY `idx_menu_code` (`menu_code`)
+) ENGINE = INNODB
+  DEFAULT CHARSET = utf8mb4;
