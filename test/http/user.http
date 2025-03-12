@@ -1,4 +1,4 @@
-### POST creat user
+### POST create user
 // @no-log
 POST http://localhost:8077/api/v1/user/create
 Content-Type: application/json

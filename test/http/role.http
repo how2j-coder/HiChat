@@ -1,0 +1,2 @@
+### POST create role
+POST http://localhost:8077/api/v1/role/create

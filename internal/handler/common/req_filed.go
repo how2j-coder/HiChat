@@ -1,4 +1,4 @@
-package handler
+package common
 
 import (
 	"errors"
@@ -8,8 +8,8 @@ import (
 	"slices"
 )
 
-// 提前符合structFiled中的map数据 ShouldBindBodyWithJSON
-func getTransmitFields(c *gin.Context, structFild interface{}) (map[string]interface{}, error) {
+// GetTransmitFields 提前符合structFiled中的map数据 ShouldBindBodyWithJSON
+func GetTransmitFields(c *gin.Context, structFild interface{}) (map[string]interface{}, error) {
 	reqFields := make(map[string]interface{})
 	err := c.ShouldBindBodyWithJSON(&reqFields)
 

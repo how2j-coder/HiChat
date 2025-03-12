@@ -19,8 +19,8 @@ type userDao struct {
 
 var _ UserDao = (*userDao)(nil)
 
-// NewTeachDao creating the dao interface
-func NewTeachDao(db *gorm.DB) UserDao {
+// NewUserDao creating the dao interface
+func NewUserDao(db *gorm.DB) UserDao {
 	return &userDao{
 		db:    db,
 	}

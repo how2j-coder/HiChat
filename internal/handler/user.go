@@ -4,6 +4,7 @@ import (
 	"com/chat/service/internal/dao"
 	"com/chat/service/internal/database"
 	"com/chat/service/internal/ecode"
+	"com/chat/service/internal/handler/common"
 	"com/chat/service/internal/model"
 	"com/chat/service/internal/types"
 	"com/chat/service/pkg/gin/middleware"
@@ -37,7 +38,7 @@ type userHandler struct {
 
 func NewUserHandler() UserHandler {
 	return &userHandler{
-		iDao: dao.NewTeachDao(database.GetDB() ),
+		iDao: dao.NewUserDao(database.GetDB()),
 	}
 }
 
@@ -151,7 +152,7 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 	}
 
 	// 获取需要更新的数据
-	update, err := getTransmitFields(c, form)
+	update, err := common.GetTransmitFields(c, form)
 
 	if err != nil {
 		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
