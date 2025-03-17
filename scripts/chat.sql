@@ -51,15 +51,16 @@ CREATE TABLE `auth_role`
 
 CREATE TABLE `casbin_rule`
 (
-    `ptype` VARCHAR(10)  NULL DEFAULT NULL,
-    `v0`    VARCHAR(256) NULL DEFAULT NULL,
-    `v1`    VARCHAR(256) NULL DEFAULT NULL,
-    `v2`    VARCHAR(256) NULL DEFAULT NULL,
-    `v3`    VARCHAR(256) NULL DEFAULT NULL,
+    `ptype` VARCHAR(10)  NULL DEFAULT NULL COMMENT '策略类型，通常是 p（策略规则）或 g（分组规则）',
+    `v0`    VARCHAR(256) NULL DEFAULT NULL COMMENT '策略主体，表示用户或角色（sub）',
+    `v1`    VARCHAR(256) NULL DEFAULT NULL COMMENT '策略对象，表示资源（obj）',
+    `v2`    VARCHAR(256) NULL DEFAULT NULL COMMENT '策略操作，表示操作行为（act）',
+    `v3`    VARCHAR(256) NULL DEFAULT NULL COMMENT 'Casbin 允许最多 6 个参数扩展使用',
     `v4`    VARCHAR(256) NULL DEFAULT NULL,
     `v5`    VARCHAR(256) NULL DEFAULT NULL
 );
 
+DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu`
 (
     `id`             BIGINT PRIMARY KEY,
@@ -67,6 +68,7 @@ CREATE TABLE `menu`
     `updated_at`     TIMESTAMP             DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
     `deleted_at`     TIMESTAMP    NULL     DEFAULT NULL,
     `parent_menu_id` BIGINT COMMENT '父级菜单ID',
+    `menu_name` VARCHAR(20) COMMENT '菜单名称',
     `menu_code`      VARCHAR(20)  NOT NULL COMMENT '菜单唯一Code',
     `menu_path`      VARCHAR(255) NOT NULL COMMENT '菜单对于地址',
     `menu_source`    VARCHAR(255) NOT NULL COMMENT '菜单对应前端的文件页面地址',

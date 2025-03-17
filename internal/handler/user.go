@@ -13,7 +13,6 @@ import (
 	"com/chat/service/pkg/jwt"
 	"com/chat/service/pkg/logger"
 	"com/chat/service/pkg/srand"
-	"com/chat/service/pkg/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
@@ -135,7 +134,7 @@ func (u *userHandler) Login(c *gin.Context)  {
 
 // UpdateByID 更新
 func (u *userHandler) UpdateByID(c *gin.Context)    {
-	_, id, isAbort := getUserExampleIDFromPath(c)
+	_, id, isAbort := common.GetIDFromPath(c)
 	if isAbort {
 		response.Error(c, ecode.InvalidParams)
 		return
@@ -143,20 +142,12 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 
 	form := &types.UpdateUserReq{}
 
-	// 参数效验
-	err := c.ShouldBindBodyWithJSON(form)
-	if err != nil {
-		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
-		response.Error(c, ecode.InvalidParams)
-		return
-	}
-
 	// 获取需要更新的数据
 	update, err := common.GetTransmitFields(c, form)
 
 	if err != nil {
 		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
-		response.Error(c, ecode.InternalServerError)
+		response.Error(c, ecode.InvalidParams)
 		return
 	}
 
@@ -176,12 +167,3 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}
 
-func getUserExampleIDFromPath(c *gin.Context) (string, uint64, bool) {
-	idStr := c.Param("id")
-	id, err := utils.StrToUint64E(idStr)
-	if err != nil || id == 0 {
-		logger.Warn("StrToUint64E error: ", logger.String("idStr", idStr), middleware.GCtxRequestIDField(c))
-		return "", 0, true
-	}
-	return idStr, id, false
-}

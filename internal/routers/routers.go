@@ -60,6 +60,7 @@ func registerRouters(
 	handlers ...gin.HandlerFunc,
 ) {
 	rg := r.Group(groupPath, handlers...)
+
 	for _, fn := range routerFns {
 		fn(rg)
 	}

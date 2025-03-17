@@ -1,6 +1,9 @@
 package common
 
 import (
+	"com/chat/service/pkg/gin/middleware"
+	"com/chat/service/pkg/logger"
+	"com/chat/service/pkg/utils"
 	"errors"
 	"github.com/gin-gonic/gin"
 	"io"
@@ -13,14 +16,13 @@ func GetTransmitFields(c *gin.Context, structFild interface{}) (map[string]inter
 	reqFields := make(map[string]interface{})
 	err := c.ShouldBindBodyWithJSON(&reqFields)
 
-
 	if err != nil && err == io.EOF {
 		err = errors.New("no data please use ShouldBindBodyWithJSON bind Data")
 		return nil, err
 	}
 
 	var reqFieldKeys []string
-	for k, _ := range reqFields {
+	for k := range reqFields {
 		reqFieldKeys = append(reqFieldKeys, k)
 	}
 
@@ -33,7 +35,6 @@ func GetTransmitFields(c *gin.Context, structFild interface{}) (map[string]inter
 		typ = typ.Elem()
 	}
 
-
 	// 遍历结构体字段
 	fields := make(map[string]interface{})
 	for i := 0; i < val.NumField(); i++ {
@@ -43,4 +44,15 @@ func GetTransmitFields(c *gin.Context, structFild interface{}) (map[string]inter
 		}
 	}
 	return fields, nil
+}
+
+// GetIDFromPath 获取地址id
+func GetIDFromPath(c *gin.Context) (string, uint64, bool) {
+	idStr := c.Param("id")
+	id, err := utils.StrToUint64E(idStr)
+	if err != nil {
+		logger.Warn("StrToUint64E error: ", logger.String("idStr", idStr), middleware.GCtxRequestIDField(c))
+		return "", 0, true
+	}
+	return idStr, id, false
 }
