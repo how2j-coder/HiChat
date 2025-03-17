@@ -1,2 +1,38 @@
 ### POST create role
+// @no-log
 POST http://localhost:8077/api/v1/role/create
+Content-Type: application/json
+
+{
+  "role_name": "root",
+  "remark": "管理员角色"
+}
+
+### POST create role
+// @no-log
+POST http://localhost:8077/api/v1/role/create
+Content-Type: application/json
+
+{
+  "role_name": "ordinary",
+  "remark": "普通用户角色"
+}
+
+### PUT update role
+// @no-log
+PUT http://localhost:8077/api/v1/role/update/555675167502635008
+Content-Type: application/json
+
+{
+  "role_name": "ordinary"
+}
+
+
+### Delete delete role
+// @no-log
+DELETE http://localhost:8077/api/v1/role/delete/555675167502635008
+
+
+### Get list
+// @no-log
+GET http://localhost:8077/api/v1/role/list?page=1&limit=10&role_name=t

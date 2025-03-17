@@ -14,4 +14,7 @@ func init()  {
 func roleRouter(group *gin.RouterGroup, h handler.RoleHandler)  {
 	g := group.Group("/role")
 	g.POST("/create", h.Create)
+	g.PUT("/update/:id", h.UpdateByID)
+	g.DELETE("/delete/:id", h.DeleteByID)
+	g.GET("/list", h.GetColumn)
 }
