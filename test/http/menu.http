@@ -1,0 +1,51 @@
+### POST create meun
+// @no-log
+POST http://localhost:8077/api/v1/menu/create
+Content-Type: application/json
+
+{
+  "menu_code": "System",
+  "menu_name": "系统管理",
+  "menu_path": "/system",
+  "menu_source": "system/index.vue"
+}
+
+### POST create meun on has parent
+// @no-log
+POST http://localhost:8077/api/v1/menu/create
+Content-Type: application/json
+
+{
+  "parent_menu_id": 555211052556488704,
+  "menu_code": "Menu",
+  "menu_name": "菜单管理",
+  "menu_path": "/menu",
+  "menu_source": "menu/index.vue"
+}
+
+### POST create meun on has parent
+// @no-log
+POST http://localhost:8077/api/v1/menu/create
+Content-Type: application/json
+
+{
+  "parent_menu_id": 555211052556488704,
+  "menu_code": "Role",
+  "menu_name": "角色管理",
+  "menu_path": "/role",
+  "menu_source": "role/index.vue"
+}
+
+### PUT update meun data
+// @no-log
+PUT http://localhost:8077/api/v1/menu/update/555220553032536064
+Content-Type: application/json
+
+{
+  "menu_name": "菜单管理"
+}
+
+
+### GET update meun data
+// @no-log
+GET http://localhost:8077/api/v1/menu/list/555211052556488704
