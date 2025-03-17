@@ -16,4 +16,5 @@ func menuRouter(group *gin.RouterGroup, h handler.MenuHandler)  {
 	g.POST("/create", h.Create)
 	g.PUT("/update/:id", h.UpdateByID)
 	g.DELETE("/delete/:id", h.DeleteByID)
+	g.GET("/list/:id", h.GetByParentIDToColumn)
 }
