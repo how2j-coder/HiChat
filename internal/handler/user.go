@@ -14,11 +14,13 @@ import (
 	"com/chat/service/pkg/logger"
 	"com/chat/service/pkg/srand"
 	"errors"
+	"fmt"
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"golang.org/x/exp/slices"
 	"gorm.io/gorm"
-	"strconv"
 )
 
 var _ UserHandler = (*userHandler)(nil)
@@ -26,6 +28,7 @@ var _ UserHandler = (*userHandler)(nil)
 type UserHandler interface {
 	Create(c *gin.Context)
 	Login(c *gin.Context)
+	Logout(c *gin.Context)
 	UpdateByID(c *gin.Context)
 	List(c *gin.Context)
 	GetByID(c *gin.Context)
@@ -42,7 +45,7 @@ func NewUserHandler() UserHandler {
 }
 
 // Create 注册
-func (u *userHandler) Create(c *gin.Context)  {
+func (u *userHandler) Create(c *gin.Context) {
 	form := &types.CreateUserReq{}
 	err := c.ShouldBindJSON(form)
 	if err != nil {
@@ -73,7 +76,7 @@ func (u *userHandler) Create(c *gin.Context)  {
 }
 
 // Login 登录
-func (u *userHandler) Login(c *gin.Context)  {
+func (u *userHandler) Login(c *gin.Context) {
 	loginType := []string{"account", "email"}
 	// 获取登录类型
 	q := c.Request.URL.Query()
@@ -132,8 +135,15 @@ func (u *userHandler) Login(c *gin.Context)  {
 	response.Success(c, token)
 }
 
+// Logout 退出
+func (u *userHandler) Logout(c *gin.Context) {
+	uid, _ := c.Get("uid")
+	fmt.Println(uid)
+	response.Success(c, nil)
+}
+
 // UpdateByID 更新
-func (u *userHandler) UpdateByID(c *gin.Context)    {
+func (u *userHandler) UpdateByID(c *gin.Context) {
 	_, id, isAbort := common.GetIDFromPath(c)
 	if isAbort {
 		response.Error(c, ecode.InvalidParams)
@@ -166,4 +176,3 @@ func (u *userHandler) UpdateByID(c *gin.Context)    {
 }
 func (u *userHandler) List(c *gin.Context)    {}
 func (u *userHandler) GetByID(c *gin.Context) {}
-

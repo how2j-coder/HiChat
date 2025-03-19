@@ -5,7 +5,19 @@ Content-Type: application/json
 
 {
   "password": "how2j.online",
-  "email": "how2jCoder@linux.do"
+  "email": "how2jCoder@linux.do",
+  "type": "Admin"
+}
+
+### POST create user
+// @no-log
+POST http://localhost:8077/api/v1/user/create
+Content-Type: application/json
+
+{
+  "password": "how2j.online",
+  "email": "how2j@linux.do",
+  "type": "Ordinary"
 }
 
 ### POST email login
@@ -42,4 +54,9 @@ Content-Type: application/json
   "username": "root123",
   "chear": "12312"
 }
+
+### GET logout
+//@no-log
+GET http://localhost:8077/api/v1/user/logout
+Authorization: Bearer {{auth_token}}
 

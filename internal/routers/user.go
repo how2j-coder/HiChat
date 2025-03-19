@@ -12,16 +12,17 @@ func init() {
 	})
 }
 
+var whiteRoter = middleware.AddWhiteRouter(map[string]string{
+	"/api/v1/user/create": "POST",
+	"/api/v1/user/login":  "POST",
+})
+
 func userRouter(group *gin.RouterGroup, h handler.UserHandler) {
 	g := group.Group("/user")
-	g.Use(middleware.Auth(
-		middleware.AddWhiteRouter(map[string]string{
-			"/api/v1/user/create": "POST",
-			"/api/v1/user/login": "POST",
-		}),
-	))
+	g.Use(middleware.Auth(whiteRoter))
 
 	g.POST("/create", h.Create)
 	g.POST("/login", h.Login)
+	g.GET("/logout", h.Logout)
 	g.PUT("/update/:id", h.UpdateByID)
 }
