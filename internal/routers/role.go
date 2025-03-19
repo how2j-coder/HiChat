@@ -17,4 +17,8 @@ func roleRouter(group *gin.RouterGroup, h handler.RoleHandler)  {
 	g.PUT("/update/:id", h.UpdateByID)
 	g.DELETE("/delete/:id", h.DeleteByID)
 	g.GET("/list", h.GetColumn)
+	// 分配用户
+	g.POST("/setUser", h.SetUserRole)
+	// 分配菜单权限
+	g.POST("/setMenu", h.SetMenuRole)
 }

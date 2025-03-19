@@ -35,4 +35,36 @@ DELETE http://localhost:8077/api/v1/role/delete/555675167502635008
 
 ### Get list
 // @no-log
-GET http://localhost:8077/api/v1/role/list?page=1&limit=10&role_name=t
+GET http://localhost:8077/api/v1/role/list?page=1&limit=10
+
+
+
+### POST set user 角色授权
+// @no-log
+POST http://localhost:8077/api/v1/role/setUser
+Content-Type: application/json
+
+{
+  "user_id": "557479636460638208",
+  "role_ids": ["557479836742848512", "557479841943785472"]
+}
+
+### POST set user 分配角色给用户
+// @no-log
+POST http://localhost:8077/api/v1/role/setUser
+Content-Type: application/json
+
+{
+  "user_id": "557479644073299968",
+  "role_ids": ["557479841943785472"]
+}
+
+### POST set menu 分配菜单给角色
+// @no-log
+POST http://localhost:8077/api/v1/role/setMenu
+Content-Type: application/json
+
+{
+  "role_id": "557479841943785472",
+  "menu_ids": ["557480499400937472","557480542895869952", "557480562357440512"]
+}

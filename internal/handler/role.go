@@ -11,6 +11,7 @@ import (
 	"com/chat/service/pkg/gin/middleware"
 	"com/chat/service/pkg/gin/response"
 	"com/chat/service/pkg/logger"
+	"com/chat/service/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 )
@@ -26,6 +27,8 @@ type RoleHandler interface {
 	UpdateByID(c *gin.Context)
 	DeleteByID(c *gin.Context)
 	GetColumn(c *gin.Context)
+	SetUserRole(c *gin.Context)
+	SetMenuRole(c *gin.Context)
 }
 
 func NewRoleHandler() RoleHandler {
@@ -171,4 +174,49 @@ func (h *roleHandler) GetColumn(c *gin.Context) {
 		"list":  data,
 		"total": total,
 	})
+}
+func (h *roleHandler) SetUserRole(c *gin.Context)  {
+	form := &types.SetUserRoleReq{}
+	err := c.ShouldBindJSON(form)
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	roleIds := utils.StrListToUint64(form.RoleIDs)
+	userId := utils.StrToUint64(form.UserID)
+	ctx := middleware.WrapCtx(c)
+
+	err = h.iDao.SetUserRole(ctx, roleIds, userId)
+	if err != nil {
+		logger.Warn("SetUserRole error: ", logger.Err(err), logger.Any("form", form), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	response.Success(c)
+}
+
+func (h *roleHandler) SetMenuRole(c *gin.Context)  {
+	form := &types.SetMenuRoleReq{}
+	err := c.ShouldBindJSON(form)
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	menuIds := utils.StrListToUint64(form.MenuIDs)
+	roleId := utils.StrToUint64(form.RoleIDs)
+	ctx := middleware.WrapCtx(c)
+
+	err = h.iDao.SetMenuRole(ctx,roleId, menuIds)
+	if err != nil {
+		logger.Warn("SetMenuRole error: ", logger.Err(err), logger.Any("form", form), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	response.Success(c)
 }
