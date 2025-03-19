@@ -25,9 +25,9 @@ func InitMysql() *gorm.DB {
 	}
 
 	dsn := utils.AdaptiveMysqlDsn(mysqlCfg.Dsn)
-	db, err := mysql.Init(dsn, opts...)
+	dbI, err := mysql.Init(dsn, opts...)
 	if err != nil {
 		panic("init mysql error: " + err.Error())
 	}
-	return db
+	return dbI
 }
