@@ -1,6 +1,7 @@
 package database
 
 import (
+	"com/chat/service/internal/model"
 	"gorm.io/gorm"
 	"sync"
 )
@@ -13,6 +14,19 @@ var (
 // InitDB connect database
 func InitDB() {
 	db = InitMysql()
+}
+
+// InitTables 初始创建表
+func InitTables() error {
+	err := db.Session(&gorm.Session{Logger: nil}).AutoMigrate(
+		model.User{},
+		model.Role{},
+		model.RoleUser{},
+		model.Menu{},
+		model.RoleMenu{},
+		model.CasbinRule{},
+	)
+	return err
 }
 
 func GetDB() *gorm.DB {

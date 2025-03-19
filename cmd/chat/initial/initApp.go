@@ -32,6 +32,12 @@ func InitApp() {
 	database.InitDB()
 	logger.InfoPf("[%s] was initialized", cfg.Database.Driver)
 
+	err = database.InitTables()
+
+	if err != nil {
+		panic(err)
+	}
+
 	database.InitCache()
 	logger.Info("[redis] was initialized")
 }
