@@ -40,6 +40,15 @@ func StrToUint64(str string) uint64 {
 	return v
 }
 
+// StrListToUint64 string list to unit64 list
+func StrListToUint64(list []string) []uint64 {
+	var result []uint64
+	for _, v := range list {
+		result = append(result, StrToUint64(v))
+	}
+	return result
+}
+
 // StrToUint64E string to uint64 with error
 func StrToUint64E(str string) (uint64, error) {
 	return strconv.ParseUint(str, 10, 64)
