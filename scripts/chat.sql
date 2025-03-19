@@ -10,6 +10,7 @@ CREATE TABLE `users`
     `avatar_url` VARCHAR(255),
     `email`      VARCHAR(100) UNIQUE,
     `gender`     VARCHAR(10) CHECK ( gender in ('Male', 'Female', 'Other')),
+    `type`     VARCHAR(10) CHECK ( type in ('Admin', 'Ordinary')),
     CONSTRAINT idx_username_password UNIQUE (account, password),
     INDEX idx_deleted_at (deleted_at)
 ) ENGINE = INNODB
@@ -27,16 +28,16 @@ CREATE TABLE `role`
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
-# 用户于角色表
+# 用户角色表
 CREATE TABLE `user_role`
 (
     `id`         BIGINT PRIMARY KEY,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP                             NOT NULL,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
-    `deleted_at` TIMESTAMP                                                       NULL DEFAULT NULL,
     `role_id`    BIGINT                                                          NOT NULL COMMENT '角色id',
-    `role_code`  VARCHAR(6)                                                      NOT NULL COMMENT 'code',
-    `user_id`    BIGINT                                                          NOT NULL COMMENT '用户id'
+    `user_id`    BIGINT                                                          NOT NULL COMMENT '用户id',
+    CONSTRAINT fk_emp_user
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_emp_role
+    FOREIGN KEY (role_id) REFERENCES role(id)
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
 
@@ -79,3 +80,6 @@ CREATE TABLE `menu`
     UNIQUE KEY `idx_menu_code` (`menu_code`)
 ) ENGINE = INNODB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE DATABASE `hi_chat`;
+DROP table casbin_rule, menu, role_menu, role_user, roles, users;
