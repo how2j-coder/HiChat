@@ -13,21 +13,21 @@ import (
 // Result output data format
 type Result struct {
 	Code int         `json:"code"`
-	Msg  string      `json:"msg"`
-	Data interface{} `json:"data"`
+	Message  string      `json:"message"`
+	Result interface{} `json:"result"`
 }
 
 func newResp(code int, msg string, data interface{}) *Result {
 	resp := &Result{
 		Code: code,
-		Msg:  msg,
+		Message:  msg,
 	}
 
 	// ensure that the data field is not nil on return, note that it is not nil when resp.data=[]interface {}, it is serialized to null
 	if data == nil {
-		resp.Data = &struct{}{}
+		resp.Result = &struct{}{}
 	} else {
-		resp.Data = data
+		resp.Result = data
 	}
 
 	return resp

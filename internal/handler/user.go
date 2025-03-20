@@ -132,7 +132,9 @@ func (u *userHandler) Login(c *gin.Context) {
 	}
 	uid := strconv.FormatUint(findUser.ID, 10)
 	token, _ := jwt.GenerateToken(uid, findUser.Username)
-	response.Success(c, token)
+	response.Success(c, map[string]string{
+		"token": token,
+	})
 }
 
 // Logout 退出
