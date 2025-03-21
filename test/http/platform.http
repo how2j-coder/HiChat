@@ -1,0 +1,27 @@
+### POST create plotform
+// @no-log
+POST http://localhost:8077/api/v1/platform/create
+Content-Type: application/json
+
+{
+  "platform_name": "IAM",
+  "is_enable": 1,
+  "platform_url": "https://how2j.online"
+}
+
+### PUT update plotform
+// @no-log
+PUT http://localhost:8077/api/v1/platform/update/558120047470448640
+Content-Type: application/json
+
+{
+  "is_enabled": 0
+}
+
+### GET get plotform
+// @no-log
+GET http://localhost:8077/api/v1/platform/list
+
+### DELETE del plotform
+// @no-log
+DELETE http://localhost:8077/api/v1/platform/delete/558120047470448640

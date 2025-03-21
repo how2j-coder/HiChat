@@ -46,6 +46,10 @@ Content-Type: application/json
 }
 
 
-### GET update meun data
+### GET search list
 // @no-log
 GET http://localhost:8077/api/v1/menu/list/555211052556488704
+
+### GET list
+// @no-log
+GET http://localhost:8077/api/v1/menu/list

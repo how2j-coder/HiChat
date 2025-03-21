@@ -3,6 +3,7 @@ package database
 import (
 	"com/chat/service/internal/model"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"sync"
 )
 
@@ -18,13 +19,16 @@ func InitDB() {
 
 // InitTables 初始创建表
 func InitTables() error {
-	err := db.Session(&gorm.Session{Logger: nil}).AutoMigrate(
+	err := db.Session(
+		&gorm.Session{Logger: logger.Default.LogMode(logger.Silent)}, // 关闭自动创建表时的日志打印
+	).AutoMigrate(
 		model.User{},
 		model.Role{},
 		model.RoleUser{},
 		model.Menu{},
 		model.RoleMenu{},
 		model.CasbinRule{},
+		model.Platform{},
 	)
 	return err
 }

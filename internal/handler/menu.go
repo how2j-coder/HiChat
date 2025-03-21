@@ -10,6 +10,7 @@ import (
 	"com/chat/service/pkg/gin/middleware"
 	"com/chat/service/pkg/gin/response"
 	"com/chat/service/pkg/logger"
+	"com/chat/service/pkg/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 )
@@ -19,6 +20,8 @@ type MenuHandler interface {
 	UpdateByID(c *gin.Context)
 	DeleteByID(c *gin.Context)
 	GetByParentIDToColumn(c *gin.Context)
+	GetByPlatformIDToColumn(c *gin.Context)
+	GetColumn(c *gin.Context)
 }
 
 type menuHandler struct {
@@ -148,5 +151,67 @@ func (m *menuHandler) GetByParentIDToColumn(c *gin.Context)  {
 		return
 	}
 
-	response.Success(c, gin.H{"menus": menuList})
+	response.Success(c, menuList)
+}
+
+// GetByPlatformIDToColumn 根据平台获取子级菜单
+func (m *menuHandler) GetByPlatformIDToColumn(c *gin.Context)  {
+	form := &types.GetMenuListReq{}
+	err := c.ShouldBindJSON(form)
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	parentID := utils.StrToUint64(form.ParentMenuID)
+	platformID := utils.StrToUint64(form.PlatformID)
+
+	ctx := middleware.WrapCtx(c)
+	menus, err := m.iDao.GetByPlatParentID(ctx, parentID, platformID)
+
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	response.Success(c, menus)
+}
+
+
+func (m *menuHandler) GetColumn(c *gin.Context) {
+	// TODO: 这里根据角色权限去获取
+	ctx := middleware.WrapCtx(c)
+	menus, err := m.iDao.GetColumn(ctx)
+	if err != nil {
+		logger.Error("GetColumn error", logger.Err(err), logger.Any("menus", menus), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	menuList, err := m.convert(menus)
+
+	if err != nil {
+		logger.Error("GetColumn Copy error", logger.Err(err), logger.Any("menus", menus), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	response.Success(c,  menuList)
+}
+
+func (m *menuHandler) convert(menus []*model.Menu) ([]types.ListMenuDetail, error) {
+	var menuList []types.ListMenuDetail
+	for _, menu := range menus {
+		data := types.ListMenuDetail{}
+		data.ID = utils.Uint64ToStr(menu.ID)
+		data.ParentMenuID = utils.Uint64ToStr(menu.ParentMenuID)
+		err := copier.Copy(&data, menu)
+		if err != nil {
+			return nil, err
+		}
+		menuList = append(menuList, data)
+	}
+	return menuList, nil
 }
