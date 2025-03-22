@@ -1,7 +1,8 @@
 package types
 
 type CreateMenuReq struct {
-	ParentMenuID uint64 `json:"parent_menu_id" binding:"number"`
+	ParentMenuID string `json:"parent_menu_id" binding:"" copier:"-"`
+	PlatformID string `json:"platform_id" binding:"number" copier:"-"`
 	MenuCode     string `json:"menu_code" binding:"required"`
 	MenuName     string `json:"menu_name" binding:"required"`
 	MenuPath     string `json:"menu_path" binding:"required"`
@@ -18,14 +19,17 @@ type UpdateMenuReq struct {
 	MenuName     *string `json:"menu_name" binding:"optional_not_empty"`
 	MenuPath     *string `json:"menu_path" binding:"optional_not_empty"`
 	MenuSource   *string `json:"menu_source" binding:"optional_not_empty"`
-	IsEnable     int8    `json:"is_enable"`
+	MenuIcon     string `json:"menu_icon"`
 	Type         int8    `json:"type"`
 	IsRefresh    int8    `json:"is_refresh"`
 	IsVisible    int8    `json:"is_visible"`
+	IsEnable     int8    `json:"is_enable"`
+	IsSingle     int8   `json:"is_single"`
 }
 
 type ListMenuDetail struct {
 	ID           string `json:"menu_id" copier:"-"`
+	PlatformID   string `json:"platform_id" copier:"-"`
 	ParentMenuID string `json:"parent_menu_id" copier:"-"`
 	MenuCode     string `json:"menu_code" `
 	MenuName     string `json:"menu_name" `
@@ -41,6 +45,6 @@ type ListMenuDetail struct {
 }
 
 type GetMenuListReq struct {
-	PlatformID string `json:"platform_id" binding:""`
-	ParentMenuID string `json:"parent_menu_id" binding:""`
+	PlatformID string `json:"platform_id" form:"platform_id" binding:""`
+	MenuID     string `json:"menu_id" form:"menu_id" binding:""`
 }

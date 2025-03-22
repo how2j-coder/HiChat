@@ -19,9 +19,9 @@ type MenuHandler interface {
 	Create(c *gin.Context)
 	UpdateByID(c *gin.Context)
 	DeleteByID(c *gin.Context)
-	GetByParentIDToColumn(c *gin.Context)
 	GetByPlatformIDToColumn(c *gin.Context)
 	GetColumn(c *gin.Context)
+	GetDetailByID(c *gin.Context)
 }
 
 type menuHandler struct {
@@ -55,6 +55,8 @@ func (m *menuHandler) Create(c *gin.Context) {
 
 	menu := &model.Menu{}
 	err = copier.Copy(menu, form)
+	menu.ParentMenuID = utils.StrToUint64(form.ParentMenuID)
+	menu.PlatformID = utils.StrToUint64(form.PlatformID)
 	if err != nil {
 		response.Error(c, ecode.InvalidParams)
 		return
@@ -124,59 +126,38 @@ func (m *menuHandler) DeleteByID(c *gin.Context) {
 	response.Success(c)
 }
 
-// GetByParentIDToColumn 获取所有子级菜单
-func (m *menuHandler) GetByParentIDToColumn(c *gin.Context)  {
-	_, id, isAbort := common.GetIDFromPath(c)
 
-	if isAbort {
+// GetByPlatformIDToColumn 根据平台获取子级菜单
+func (m *menuHandler) GetByPlatformIDToColumn(c *gin.Context)  {
+	form := &types.GetMenuListReq{}
+	err := c.ShouldBindQuery(form)
+	if err != nil {
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
 		response.Error(c, ecode.InvalidParams)
 		return
 	}
 
+	menuID := utils.StrToUint64(form.MenuID)
+	platformID := utils.StrToUint64(form.PlatformID)
+
 	ctx := middleware.WrapCtx(c)
-	menus, err := m.iDao.GetByParentID(ctx, id)
+	menus, err := m.iDao.GetByPlatParentID(ctx, menuID, platformID)
 
 	if err != nil {
-		logger.Error("GetListByParentID error", logger.Err(err), logger.Any("id", id), middleware.GCtxRequestIDField(c))
-		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
 		return
 	}
 
-	var menuList []types.ListMenuDetail
-	err = copier.Copy(&menuList, menus)
+	menuList, err := m.convert(menus)
 
 	if err != nil {
-		logger.Error("GetListByParentID Copy error", logger.Err(err), logger.Any("id", id), middleware.GCtxRequestIDField(c))
+		logger.Error("GetColumn Copy error", logger.Err(err), logger.Any("menus", menus), middleware.GCtxRequestIDField(c))
 		response.Output(c, ecode.InternalServerError.ToHTTPCode())
 		return
 	}
 
 	response.Success(c, menuList)
-}
-
-// GetByPlatformIDToColumn 根据平台获取子级菜单
-func (m *menuHandler) GetByPlatformIDToColumn(c *gin.Context)  {
-	form := &types.GetMenuListReq{}
-	err := c.ShouldBindJSON(form)
-	if err != nil {
-		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
-		response.Error(c, ecode.InvalidParams)
-		return
-	}
-
-	parentID := utils.StrToUint64(form.ParentMenuID)
-	platformID := utils.StrToUint64(form.PlatformID)
-
-	ctx := middleware.WrapCtx(c)
-	menus, err := m.iDao.GetByPlatParentID(ctx, parentID, platformID)
-
-	if err != nil {
-		logger.Warn("ShouldBindJSON error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
-		response.Error(c, ecode.InvalidParams)
-		return
-	}
-
-	response.Success(c, menus)
 }
 
 
@@ -201,12 +182,45 @@ func (m *menuHandler) GetColumn(c *gin.Context) {
 	response.Success(c,  menuList)
 }
 
+func (m *menuHandler) GetDetailByID(c *gin.Context) {
+	_, id, isAbort := common.GetIDFromPath(c)
+
+	if isAbort {
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	ctx := middleware.WrapCtx(c)
+	findMenu, err := m.iDao.GetDetailByID(ctx, id)
+	if err != nil {
+		logger.Warn("GetByID error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	menu := types.ListMenuDetail{}
+	menu.ID = utils.Uint64ToStr(findMenu.ID)
+	menu.ParentMenuID = utils.Uint64ToStr(findMenu.ParentMenuID)
+	menu.PlatformID = utils.Uint64ToStr(findMenu.PlatformID)
+
+	err = copier.Copy(&menu, findMenu)
+
+	if err != nil {
+		logger.Warn("GetDetailByID error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	response.Success(c, menu)
+}
+
 func (m *menuHandler) convert(menus []*model.Menu) ([]types.ListMenuDetail, error) {
-	var menuList []types.ListMenuDetail
+	menuList := make([]types.ListMenuDetail, 0)
 	for _, menu := range menus {
 		data := types.ListMenuDetail{}
 		data.ID = utils.Uint64ToStr(menu.ID)
 		data.ParentMenuID = utils.Uint64ToStr(menu.ParentMenuID)
+		data.PlatformID = utils.Uint64ToStr(menu.PlatformID)
 		err := copier.Copy(&data, menu)
 		if err != nil {
 			return nil, err

@@ -11,7 +11,7 @@ type User struct {
 	AvatarURL       string `gorm:"type:varchar(255)"`
 	Gender          string `gorm:"type:varchar(10);check:gender IN ('Male', 'Female', 'Other');default:'Other'"`
 	Type            string `gorm:"type:varchar(10);check:type IN ('Admin', 'Ordinary');default:'ordinary'"`
-	Role            []Role `gorm:"many2many:role_user"`
+	Role            []Role `gorm:"many2many:role_user" json:"-"`
 }
 
 func (u *User) TableName() string {

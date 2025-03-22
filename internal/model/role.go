@@ -11,8 +11,8 @@ type Role struct {
 	ParentRoleID uint64 `gorm:"column:parent_role_id"`
 	RoleName string `gorm:"type:varchar(56);unique_index;not null"`
 	Remark string `gorm:"type:varchar(255);"`
-	User []User `gorm:"many2many:role_user;"`
-	Menu []Menu `gorm:"many2many:role_menu;"`
+	User []User `gorm:"many2many:role_user;" json:"-"`
+	Menu []Menu `gorm:"many2many:role_menu;" json:"-"`
 }
 
 func (r *Role) TableName() string {

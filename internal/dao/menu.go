@@ -15,6 +15,7 @@ type MenuDao interface {
 	GetByMenuCodeExcID(ctx context.Context, id uint64, menuCode string) (*model.Menu, error)
 	GetColumn(ctx context.Context) ([]*model.Menu, error)
 	GetByPlatParentID(ctx context.Context, parentID uint64, platformID uint64) ([]*model.Menu, error)
+	GetDetailByID(ctx context.Context, id uint64) (*model.Menu, error)
 }
 
 type menuDao struct {
@@ -79,9 +80,15 @@ func (m *menuDao)GetColumn(ctx context.Context) ([]*model.Menu, error) {
 
 func (m *menuDao) GetByPlatParentID(ctx context.Context, parentID uint64, platformID uint64) ([]*model.Menu, error)  {
 	var menus []*model.Menu
-	err := m.db.WithContext(ctx).Where("parent_menu_id = ?", parentID, "platform_id = ?", platformID).Find(&menus).Error
+	err := m.db.WithContext(ctx).Where("parent_menu_id = ? AND platform_id = ?", parentID, platformID).Find(&menus).Error
 	if err != nil {
 		return nil, err
 	}
 	return menus, nil
+}
+
+func (m *menuDao) GetDetailByID(ctx context.Context, id uint64) (*model.Menu, error) {
+	var menu = new(model.Menu)
+	err := m.db.WithContext(ctx).First(menu, "id = ?", id).Error
+	return menu, err
 }

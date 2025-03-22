@@ -4,10 +4,11 @@ POST http://localhost:8077/api/v1/menu/create
 Content-Type: application/json
 
 {
+  "platform_id": "558267831662153728",
   "menu_code": "System",
   "menu_name": "系统管理",
   "menu_path": "/system",
-  "menu_source": "system/index.vue"
+  "menu_source": "LAYOUT"
 }
 
 ### POST create meun on has parent
@@ -16,11 +17,12 @@ POST http://localhost:8077/api/v1/menu/create
 Content-Type: application/json
 
 {
-  "parent_menu_id": 555211052556488704,
+  "parent_menu_id": "558529743369015296",
+  "platform_id": "558267831662153728",
   "menu_code": "Menu",
   "menu_name": "菜单管理",
   "menu_path": "/menu",
-  "menu_source": "menu/index.vue"
+  "menu_source": "views/system/menu/index.vue"
 }
 
 ### POST create meun on has parent
@@ -29,11 +31,12 @@ POST http://localhost:8077/api/v1/menu/create
 Content-Type: application/json
 
 {
-  "parent_menu_id": 555211052556488704,
+  "parent_menu_id": "558529743369015296",
+  "platform_id": "558267831662153728",
   "menu_code": "Role",
   "menu_name": "角色管理",
   "menu_path": "/role",
-  "menu_source": "role/index.vue"
+  "menu_source": "views/system/role/index.vue"
 }
 
 ### PUT update meun data
