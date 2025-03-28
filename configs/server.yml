@@ -4,6 +4,7 @@ app:
   env: "dev"
   host: "127.0.0.1"
   cacheType: "redis"
+  enableTrace: true
 
 
 # http server settings

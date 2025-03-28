@@ -33,6 +33,7 @@ type App struct {
 	Env       string `yaml:"env" json:"env"`
 	Name      string `yaml:"name" json:"name"`
 	CacheType string `yaml:"cache_type" json:"cache_type"`
+	EnableTrace           bool    `yaml:"enableTrace" json:"enableTrace"` // 链路追踪
 }
 
 type Mysql struct {

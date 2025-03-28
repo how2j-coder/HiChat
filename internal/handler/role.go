@@ -175,6 +175,7 @@ func (h *roleHandler) GetColumn(c *gin.Context) {
 		"total": total,
 	})
 }
+
 func (h *roleHandler) SetUserRole(c *gin.Context)  {
 	form := &types.SetUserRoleReq{}
 	err := c.ShouldBindJSON(form)
