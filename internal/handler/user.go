@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"com/chat/service/internal/cache"
 	"com/chat/service/internal/dao"
 	"com/chat/service/internal/database"
 	"com/chat/service/internal/ecode"
@@ -15,12 +16,12 @@ import (
 	"com/chat/service/pkg/srand"
 	"errors"
 	"fmt"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
+	"github.com/redis/go-redis/v9"
 	"golang.org/x/exp/slices"
 	"gorm.io/gorm"
+	"strconv"
 )
 
 var _ UserHandler = (*userHandler)(nil)
@@ -77,6 +78,18 @@ func (u *userHandler) Create(c *gin.Context) {
 
 // Login 登录
 func (u *userHandler) Login(c *gin.Context) {
+	cRedis := database.GetRedisClient()
+	defer func(cRedis *redis.Client) {
+		err := cRedis.Close()
+		if err != nil {
+			logger.Warn("Redis.Close() error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+			response.Output(c, ecode.InternalServerError.ToHTTPCode())
+			return
+		}
+	}(cRedis)
+
+	uCache := cache.NewUserCache(cRedis)
+
 	loginType := []string{"account", "email"}
 	// 获取登录类型
 	q := c.Request.URL.Query()
@@ -132,6 +145,10 @@ func (u *userHandler) Login(c *gin.Context) {
 	}
 	uid := strconv.FormatUint(findUser.ID, 10)
 	token, _ := jwt.GenerateToken(uid, findUser.Username)
+
+	// redis 缓存token
+	err = uCache.Set(ctx, findUser.ID, &token, cache.UserCacheExpireTime)
+
 	response.Success(c, map[string]string{
 		"token": token,
 	})

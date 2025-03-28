@@ -9,6 +9,7 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/validator/v10 v10.23.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
+	github.com/golang/snappy v1.0.0
 	github.com/jinzhu/copier v0.4.0
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/redis/go-redis/v9 v9.7.1

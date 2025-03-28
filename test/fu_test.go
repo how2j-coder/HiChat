@@ -27,3 +27,16 @@ func TestCopier(t *testing.T) {
 	}
 	t.Log(ty.Name)
 }
+
+
+func TestFor(t *testing.T) {
+	a := make(map[string]string, 0)
+	a = map[string]string{
+		"1": "1-1",
+		"2": "2-2",
+	}
+	t.Log(len(a))
+	for i, m := range a {
+		t.Log(i, m)
+	}
+}
