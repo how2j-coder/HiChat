@@ -2,7 +2,7 @@ package errcode
 
 // Http system level error code, error code range 10000~20000
 var (
-	Success             = NewError(0, "ok")
+	Success             = NewError(0, "success")
 	InvalidParams       = NewError(100001, "Invalid Parameter")
 	Unauthorized        = NewError(100002, "Unauthorized")
 	InternalServerError = NewError(100003, "Internal Server Error")

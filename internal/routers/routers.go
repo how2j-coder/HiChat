@@ -39,6 +39,11 @@ func NewRouter() *gin.Engine {
 		jwt.WithSigningMethod(jwt.HS384),
 	)
 
+	// trace middleware
+	// if config.GetConfig().App.EnableTrace {
+	// 	r.Use(middleware.Tracing(config.GetConfig().App.Name))
+	// }
+
 	// validator
 	binding.Validator = validator.Init()
 

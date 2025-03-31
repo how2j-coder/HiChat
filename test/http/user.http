@@ -39,7 +39,7 @@ Content-Type: application/json
 
 {
   "password": "how2j.online",
-  "account": "HHvSOX"
+  "account": "lHQbeH"
 }
 
 > {% client.global.set("auth_token", response.body.data); %}

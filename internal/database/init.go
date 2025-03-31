@@ -29,6 +29,7 @@ func InitTables() error {
 		model.RoleMenu{},
 		model.CasbinRule{},
 		model.Platform{},
+		model.Upload{},
 	)
 	return err
 }

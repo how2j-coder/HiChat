@@ -152,7 +152,7 @@ func Logging(opts ...Option) gin.HandlerFunc {
 			return
 		}
 
-		// print input information before processing
+		// print input information before processing 处理前打印输入信息
 		buf := bytes.Buffer{}
 		_, _ = buf.ReadFrom(c.Request.Body)
 
@@ -161,9 +161,10 @@ func Logging(opts ...Option) gin.HandlerFunc {
 			zap.String("url", c.Request.URL.String()),
 		}
 		if c.Request.Method == http.MethodPost || c.Request.Method == http.MethodPut || c.Request.Method == http.MethodPatch || c.Request.Method == http.MethodDelete {
+			bodyStringFiled := zap.ByteString("body", getRequestBody(&buf, o.maxLength))
 			fields = append(fields,
 				zap.Int("size", buf.Len()),
-				zap.ByteString("body", getRequestBody(&buf, o.maxLength)),
+				bodyStringFiled,
 			)
 		}
 
