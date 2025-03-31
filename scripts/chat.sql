@@ -98,3 +98,5 @@ INSERT INTO hi_chat.menu (id, created_at, updated_at, deleted_at, parent_menu_id
 
 INSERT INTO hi_chat.users (id, created_at, updated_at, deleted_at, username, account, password, email, avatar_url, gender, type) VALUES (557479636460638208, '2025-03-19 16:25:02.804', '2025-03-19 16:25:02.804', null, '', 'lHQbeH', '$2a$10$wAK6ETAET4ozXeszpqksZOKrB9nGRNT4kbLdkP6BtYhlr0Fv6O0wa', 'how2jCoder@linux.do', '', 'Other', 'Admin');
 INSERT INTO hi_chat.users (id, created_at, updated_at, deleted_at, username, account, password, email, avatar_url, gender, type) VALUES (557479644073299968, '2025-03-19 16:25:04.618', '2025-03-19 16:25:04.618', null, '', 'eqwNdt', '$2a$10$VZSSLIDLPamtHl7clxdRge7X58mhptMSg5Q/0ygQduoC9kWwFs6pq', 'how2j@linux.do', '', 'Other', 'Ordinary');
+DELETE FROM users;
+DELETE FROM menu;
