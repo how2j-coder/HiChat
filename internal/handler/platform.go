@@ -20,6 +20,7 @@ type PlatformHandler interface {
 	Create(c *gin.Context)
 	UpdateById(c *gin.Context)
 	GetColumn(c *gin.Context)
+	GetByID(c *gin.Context)
 	DeleteById(c *gin.Context)
 }
 
@@ -61,6 +62,33 @@ func (h *platformHandler) Create(c *gin.Context) {
 	}
 
 	response.Success(c)
+}
+
+func (h *platformHandler) GetByID(c *gin.Context) {
+	_, id, isAbort := common.GetIDFromPath(c)
+	if isAbort {
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+
+	ctx := middleware.WrapCtx(c)
+	findPlat, err := h.iDao.GetByID(ctx, id)
+
+	if err != nil {
+		logger.Warn("GetByID error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Output(c, ecode.InternalServerError.ToHTTPCode())
+		return
+	}
+
+	result := types.PlatDetailResp{}
+	result.ID = utils.Uint64ToStr(findPlat.ID)
+	err = copier.Copy(&result, findPlat)
+	if err != nil {
+		logger.Warn("Copy error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
+		response.Error(c, ecode.InvalidParams)
+		return
+	}
+	response.Success(c, result)
 }
 
 func (h *platformHandler) GetColumn(c *gin.Context) {
@@ -139,7 +167,6 @@ func (h *platformHandler) convert(platforms []*model.Platform) ([]types.PlatDeta
 	for _, platform := range platforms {
 		data := types.PlatDetailResp{}
 		data.ID = utils.Uint64ToStr(platform.ID)
-		data.IsEnabled = utils.IntToStr(int(platform.IsEnabled))
 		err := copier.Copy(&data, platform)
 		if err != nil {
 			return nil, err

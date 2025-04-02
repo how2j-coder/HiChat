@@ -8,7 +8,7 @@ type Platform struct {
 	PlatformCode  string `gorm:"type:varchar(255);unique_index;not null"`
 	IsEnabled     int8   `gorm:"default:1;comment:是否启用(0 停用 1 启用)"`
 	PlatformUrl   string `gorm:"type:varchar(255);not null"`
-	Menus []Menu `gorm:"foreignkey:PlatformID;"`
+	Menus []Menu `gorm:"foreignkey:PlatformID;" json:"-"`
 }
 
 func (p *Platform) TableName() string {

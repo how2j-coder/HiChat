@@ -17,6 +17,6 @@ type PlatDetailResp struct {
 	ID string `json:"platform_id" copier:"-"`
 	PlatformName string `json:"platform_name"`
 	PlatformCode string `json:"platform_code" `
-	IsEnabled string `json:"is_enabled" copier:"-"`
+	IsEnabled int8 `json:"is_enabled"`
 	PlatformUrl string `json:"platform_url"`
 }

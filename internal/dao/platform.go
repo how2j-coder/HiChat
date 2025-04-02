@@ -8,6 +8,7 @@ import (
 
 type PlatformDao interface {
 	Create(ctx context.Context, table *model.Platform) error
+	GetByID(ctx context.Context, id uint64) (*model.Platform, error)
 	UpdateByID(ctx context.Context, table *model.Platform, update map[string]interface{}) error
 	DeleteByID(ctx context.Context, table *model.Platform) error
 	GetColumn(ctx context.Context) ([]*model.Platform, error)
@@ -49,4 +50,12 @@ func (d *platformDao) GetColumn(ctx context.Context) ([]*model.Platform, error) 
 		return nil, err
 	}
 	return platforms, nil
+}
+
+func (d *platformDao) GetByID(ctx context.Context, id uint64) (*model.Platform, error) {
+	var platform model.Platform
+	if err := d.db.WithContext(ctx).First(&platform, id).Error; err != nil {
+		return nil, err
+	}
+	return &platform, nil
 }

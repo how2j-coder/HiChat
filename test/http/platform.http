@@ -25,3 +25,7 @@ GET http://localhost:8077/api/v1/platform/list
 ### DELETE del plotform
 // @no-log
 DELETE http://localhost:8077/api/v1/platform/delete/558120047470448640
+
+### GET get plotform detail
+// @no-log
+GET http://localhost:8077/api/v1/platform/detail/558267831662153728

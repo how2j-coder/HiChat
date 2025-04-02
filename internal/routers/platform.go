@@ -13,6 +13,8 @@ func init()  {
 
 func platformRouter(group *gin.RouterGroup, h handler.PlatformHandler) {
 	g := group.Group("/platform")
+
+	g.GET("/detail/:id", h.GetByID)
 	g.POST("/create", h.Create)
 	g.PUT("/update/:id", h.UpdateById)
 	g.GET("/list", h.GetColumn)

@@ -18,7 +18,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
-	"github.com/redis/go-redis/v9"
 	"golang.org/x/exp/slices"
 	"gorm.io/gorm"
 	"strconv"
@@ -79,14 +78,7 @@ func (u *userHandler) Create(c *gin.Context) {
 // Login 登录
 func (u *userHandler) Login(c *gin.Context) {
 	cRedis := database.GetRedisClient()
-	defer func(cRedis *redis.Client) {
-		err := cRedis.Close()
-		if err != nil {
-			logger.Warn("Redis.Close() error: ", logger.Err(err), middleware.GCtxRequestIDField(c))
-			response.Output(c, ecode.InternalServerError.ToHTTPCode())
-			return
-		}
-	}(cRedis)
+	defer cRedis.Close()
 
 	uCache := cache.NewUserCache(cRedis)
 
